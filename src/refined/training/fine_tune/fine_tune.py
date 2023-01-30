@@ -61,6 +61,7 @@ def start_fine_tuning_task(refined: 'Refined', train_docs: Iterable[Doc],
         collate_fn=training_dataset.collate
     )
 
+
     model = refined.model
 
     if fine_tuning_args.restore_model_path is not None:
