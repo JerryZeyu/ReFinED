@@ -37,7 +37,8 @@ def main():
     print("***********3")
     resource_manager = ResourceManager(S3Manager(),
                                        data_dir=training_args.data_dir,
-                                       entity_set=training_args.entity_set
+                                       entity_set=training_args.entity_set,
+                                       model_name=None
                                        )
     preprocessor = PreprocessorInferenceOnly_UMLS(
         data_dir=training_args.data_dir,
