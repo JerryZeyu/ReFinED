@@ -319,9 +319,11 @@ class Datasets:
 
 class Datasets_BioNorm:
     def __init__(self,
-                 preprocessor: Preprocessor
+                 preprocessor: Preprocessor,
+                 resource_manager: ResourceManager
                  ):
         self.preprocessor = preprocessor
+        self.datasets_to_files = resource_manager.get_bionorm_dataset_files()
     def get_custom_dataset_name_docs_ShareClef(
             self,
             split: str,
@@ -330,22 +332,21 @@ class Datasets_BioNorm:
             filter_not_in_kb: bool = True,
             include_mentions_for_nil: bool = True,
     ) -> Iterable[Doc_UMLS]:
-        split_to_name = {
-            "train": "Corpus_bionorm/ShareClef/train_docID2context.pkl",
-            "dev": "Corpus_bionorm/ShareClef/dev_docID2context.pkl",
-            "test": "Corpus_bionorm/ShareClef/test_docID2context.pkl",
+        split_to_name_context = {
+            "train": "ShareClef_context_train",
+            "dev": "ShareClef_context_dev",
+            "test": "ShareClef_context_test",
         }
         split_to_name_mentions = {
-            "train": "Corpus_bionorm/ShareClef/train_docID2mentions.pkl",
-            "dev": "Corpus_bionorm/ShareClef/dev_docID2mentions.pkl",
-            "test": "Corpus_bionorm/ShareClef/test_docID2mentions.pkl",
+            "train": "ShareClef_mentions_train",
+            "dev": "ShareClef_mentions_dev",
+            "test": "ShareClef_mentions_test",
         }
-        assert split in split_to_name, "split must be in {train, dev, test}"
-        umlsID2wikidataID = pickle_load_large_file("Corpus_bionorm/umlsID2wikidataID.pkl")
-        umlsID2wikiTitle = pickle_load_large_file("Corpus_bionorm/umlsID2wikiTitle.pkl")
-        filename = split_to_name[split]
-        filename_mentions = split_to_name_mentions[split]
-        docID2context = pickle_load_large_file(filename)
+        assert split in split_to_name_context, "split must be in {train, dev, test}"
+        assert split in split_to_name_mentions, "split must be in {train, dev, test}"
+        filename_context = self.datasets_to_files[split_to_name_context[split]]
+        filename_mentions = self.datasets_to_files[split_to_name_mentions[split]]
+        docID2context = pickle_load_large_file(filename_context)
         docID2mentions = pickle_load_large_file(filename_mentions)
         # print(docID2mentions)
         for docID in docID2context.keys():

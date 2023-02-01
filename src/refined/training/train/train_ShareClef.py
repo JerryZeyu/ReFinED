@@ -35,6 +35,10 @@ def main():
     training_args = parse_training_args()
 
     print("***********3")
+    resource_manager = ResourceManager(S3Manager(),
+                                       data_dir=training_args.data_dir,
+                                       entity_set=training_args.entity_set
+                                       )
     preprocessor = PreprocessorInferenceOnly_UMLS(
         data_dir=training_args.data_dir,
         debug=training_args.debug,
@@ -44,7 +48,7 @@ def main():
         entity_set=training_args.entity_set,
         use_precomputed_description_embeddings=False
     )
-    datasets = Datasets_BioNorm(preprocessor=preprocessor)
+    datasets = Datasets_BioNorm(preprocessor=preprocessor, resource_manager=resource_manager)
     training_dataset = DocDataset_UMLS(
         docs=list(datasets.get_custom_dataset_name_docs_ShareClef(split="train", include_gold_label=True)),
         preprocessor=preprocessor

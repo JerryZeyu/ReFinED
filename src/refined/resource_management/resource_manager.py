@@ -3,7 +3,7 @@ from copy import deepcopy
 from typing import Dict, Tuple, Optional
 
 from refined.constants.resources_constants import DATA_FILES_WIKIDATA, DATA_FILES_WIKIPEDIA, DATA_FILES_UMLS, DATASET_DATA_FILES, \
-    ADDITIONAL_DATA_FILES, model_name_to_files, TRAINING_DATA_FILES
+    ADDITIONAL_DATA_FILES, model_name_to_files, TRAINING_DATA_FILES, BIONORM_DATASET_DATA_FILES
 from refined.resource_management.aws import S3Manager
 
 
@@ -176,6 +176,14 @@ class ResourceManager:
             )
         return resource_to_file_path
 
+    def get_bionorm_dataset_files_info(self) -> Dict[str, Dict[str, str]]:
+        resource_to_file_path: Dict[str, Dict[str, str]] = deepcopy(BIONORM_DATASET_DATA_FILES)
+        for resource_name, resource_locations in resource_to_file_path.items():
+            resource_locations['local_filename'] = os.path.join(
+                self.datasets_dir, resource_locations["local_filename"]
+            )
+        return resource_to_file_path
+
     def get_additional_data_files(self) -> Dict[str, str]:
         resource_to_file_path: Dict[str, Dict[str, str]] = self.get_additional_data_files_info()
         return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
@@ -188,6 +196,9 @@ class ResourceManager:
         resource_to_file_path: Dict[str, Dict[str, str]] = self.get_dataset_files_info()
         return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
 
+    def get_bionorm_dataset_files(self) -> Dict[str, str]:
+        resource_to_file_path: Dict[str, Dict[str, str]] = self.get_bionorm_dataset_files_info()
+        return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
     def get_data_files(self) -> Dict[str, str]:
         resource_to_file_path: Dict[str, Dict[str, str]] = self.get_data_files_info()
         return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
