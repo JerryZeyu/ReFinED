@@ -560,12 +560,12 @@ def convert_batch_element_to_tensors_UMLS(
         # )
 
         if processor.precomputed_descriptions is not None:
-            candidate_desc_emb = processor.get_descriptions_emb_for_qcode_batch(
+            candidate_desc_emb = processor.get_descriptions_emb_for_umlsID_batch(
                 candidate_umlsIDs, shape=(num_ents, max_candidates, -1)
             )
             candidate_desc = None
         else:
-            candidate_desc = processor.get_descriptions_for_qcode_batch(
+            candidate_desc = processor.get_descriptions_for_umlsID_batch(
                 candidate_umlsIDs, shape=(-1, max_candidates, 32)
             )  # TODO replace constant 32
             candidate_desc_emb = None

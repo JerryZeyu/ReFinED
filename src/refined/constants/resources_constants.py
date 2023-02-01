@@ -33,7 +33,7 @@ DATA_FILES_UMLS = {
     "descriptions_tns": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/descriptions_tns.pt",
-        "local_filename": "UMLS_data/descriptions_tns.pt",
+        "local_filename": "Corpus_bionorm/UMLS/descriptions_tns.pt",
         "needed_for_inference": False  # only needed if use_precomputed_desc_embedding=False
     },
     "umls_to_title": {

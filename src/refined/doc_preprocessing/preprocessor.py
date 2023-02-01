@@ -429,6 +429,7 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
         # `descriptions_tns` is None when use_precomputed_description_embeddings is True
         self.descriptions_tns = self.lookups.descriptions_tns
         self.umlsID_to_title = self.lookups.umlsID_to_title
+        self.umlsID_to_idx = self.lookups.umlsID_to_idx
         self.nltk_sentence_splitter_english = self.lookups.nltk_sentence_splitter_english
         self.transformer_config = self.lookups.transformer_model_config
         self.candidate_generator: CandidateGenerator = CandidateGeneratorExactMatch_usingSAPBERT(
@@ -509,8 +510,8 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
         """
         return self.class_handler.get_classes_idx_for_qcode_batch(qcodes=qcodes, shape=shape)
 
-    def get_descriptions_emb_for_qcode_batch(
-            self, qcodes: List[str], shape: Tuple[int, ...] = None
+    def get_descriptions_emb_for_umlsID_batch(
+            self, umlsIDs: List[str], shape: Tuple[int, ...] = None
     ) -> torch.Tensor:
         """
         Retrieves descriptions input_ids for a batch of qcodes and optionally reshapes tensor.
@@ -520,7 +521,7 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
         """
         result = torch.from_numpy(
             self.precomputed_descriptions[
-                [self.qcode_to_idx[qcode] if qcode in self.qcode_to_idx else 0 for qcode in qcodes]
+                [self.umlsID_to_idx[umlsID] if umlsID in self.umlsID_to_idx else 0 for umlsID in umlsIDs]
             ]
         ).type(torch.float32)  # added casting to resolve float16 issue on CPU.
         # TODO: only cast to float32 when using CPU (note that this requires knowledge of the device being used).
@@ -529,8 +530,8 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
         else:
             return result
 
-    def get_descriptions_for_qcode_batch(
-            self, qcodes: List[str], shape: Tuple[int, ...] = None
+    def get_descriptions_for_umlsID_batch(
+            self, umlsIDs: List[str], shape: Tuple[int, ...] = None
     ) -> torch.Tensor:
         """
         Retrieves descriptions input_ids for a batch of qcodes and optionally reshapes tensor.
@@ -539,7 +540,7 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
         :return: long tensor with shape (num_ents, self.max_num_classes) (qcode index 0 is used for padding all classes)
         """
         result = self.descriptions_tns[
-            [self.qcode_to_idx[qcode] if qcode in self.qcode_to_idx else 0 for qcode in qcodes]
+            [self.umlsID_to_idx[umlsID] if umlsID in self.umlsID_to_idx else 0 for umlsID in umlsIDs]
         ]
         if shape is not None:
             return result.view(shape)

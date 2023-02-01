@@ -6,7 +6,7 @@ import torch
 import ujson as json
 from nltk import PunktSentenceTokenizer
 from transformers import AutoTokenizer, AutoModel, AutoConfig, PreTrainedTokenizer, PreTrainedModel
-
+from refined.offline_data_generation.generate_descriptions_tensor_UMLS import load_umlsID_to_idx
 from refined.resource_management.resource_manager import ResourceManager, get_mmap_shape
 from refined.resource_management.aws import S3Manager
 from refined.resource_management.lmdb_wrapper import LmdbImmutableDict
@@ -126,7 +126,7 @@ class LookupsInferenceOnly_UMLS:
         else:
             # TODO: convert to numpy memmap to save space during training with multiple workers
             self.descriptions_tns = None
-
+        self.umlsID_to_idx: Dict[str, int] = load_umlsID_to_idx(resource_to_file_path["qcode_to_idx"])
         self.index_path = resource_to_file_path["sapbert_index_path"]
         self.model_dir = resource_to_file_path["sapbert_model"]
         if return_titles:
