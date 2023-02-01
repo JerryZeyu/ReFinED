@@ -134,12 +134,12 @@ class LookupsInferenceOnly_UMLS:
         else:
             # TODO: convert to numpy memmap to save space during training with multiple workers
             self.descriptions_tns = None
-        self.umlsID_to_idx: Dict[str, int] = load_umlsID_to_idx(resource_to_file_path["qcode_to_idx"])
+        self.umlsID_to_idx = pickle_load_large_file(resource_to_file_path["umlsID_to_idx"])
 
         self.index_path = resource_to_file_path["sapbert_index_path"]
         self.model_dir = resource_to_file_path["sapbert_model"]
         if return_titles:
-            self.umlsID_to_title: Dict[str, str] = pickle_load_large_file(resource_to_file_path["umls_to_title"])
+            self.umlsID_to_title: Dict[str, str] = pickle_load_large_file(resource_to_file_path["umlsID_to_title"])
         else:
             self.umlsID_to_title = None
 
