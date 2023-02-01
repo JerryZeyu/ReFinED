@@ -63,7 +63,7 @@ DATA_FILES_UMLS = {
     "nltk_sentence_splitter_english": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/nltk_sentence_splitter_english.pickle",
-        "local_filename": "UMLS_data/nltk_sentence_splitter_english.pickle",
+        "local_filename": "nltk_sentence_splitter_english.pickle",
         "needed_for_inference": True  # only needed if map to Wikipedia titles
     }
 }
