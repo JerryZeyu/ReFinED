@@ -532,31 +532,31 @@ BIONORM_DATASET_DATA_FILES = {
     "ShareClef_context_train": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "train_docID2context.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/train_docID2context.pkl",
+        "local_filename": "ShareClef/train_docID2context.pkl",
     },
     "ShareClef_context_dev": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "dev_docID2context.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/dev_docID2context.pkl",
+        "local_filename": "ShareClef/dev_docID2context.pkl",
     },
     "ShareClef_context_test": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "test_docID2context.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/test_docID2context.pkl",
+        "local_filename": "ShareClef/test_docID2context.pkl",
     },
     "ShareClef_mentions_train": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "train_docID2mentions.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/train_docID2mentions.pkl",
+        "local_filename": "ShareClef/train_docID2mentions.pkl",
     },
     "ShareClef_mentions_dev": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "dev_docID2mentions.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/dev_docID2mentions.pkl",
+        "local_filename": "ShareClef/dev_docID2mentions.pkl",
     },
     "ShareClef_mentions_test": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "test_docID2mentions.pkl",
-        "local_filename": "Corpus_bionorm/ShareClef/test_docID2mentions.pkl",
+        "local_filename": "ShareClef/test_docID2mentions.pkl",
     }
 }
