@@ -11,9 +11,9 @@ from torch.utils.data import DataLoader
 from tqdm.auto import trange, tqdm
 from transformers import get_linear_schedule_with_warmup
 
-from refined.data_types.doc_types import Doc
-from refined.dataset_reading.entity_linking.document_dataset import DocDataset
-from refined.evaluation.evaluation import get_datasets_obj, evaluate_UMLS
+from refined.data_types.doc_types import Doc, Doc_UMLS
+from refined.dataset_reading.entity_linking.document_dataset import DocDataset, DocDataset_UMLS
+from refined.evaluation.evaluation_UMLS import get_datasets_obj, evaluate
 from refined.inference.processor import Refined, Refined_UMLS
 from refined.training.fine_tune.fine_tune_args import FineTuningArgs, parse_fine_tuning_args
 from refined.training.train.training_args import TrainingArgs
@@ -26,7 +26,7 @@ def main():
     fine_tuning_args = parse_fine_tuning_args()
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     LOG.info("Fine-tuning end-to-end EL" if fine_tuning_args.el else "Fine-tuning ED only.")
-    refined = Refined.from_pretrained(model_name=fine_tuning_args.model_name,
+    refined = Refined_UMLS.from_pretrained(model_name=fine_tuning_args.model_name,
                                       entity_set=fine_tuning_args.entity_set,
                                       use_precomputed_descriptions=fine_tuning_args.use_precomputed_descriptions,
                                       device=fine_tuning_args.device)
@@ -34,7 +34,7 @@ def main():
     datasets = get_datasets_obj(preprocessor=refined.preprocessor)
 
     evaluation_dataset_name_to_docs = {
-        "AIDA": list(datasets.get_aida_docs(
+        "ShareClef": list(datasets.get_custom_dataset_name_docs_ShareClef(
             split="dev",
             include_gold_label=True,
             filter_not_in_kb=True,
@@ -43,16 +43,16 @@ def main():
     }
     start_fine_tuning_task(refined=refined,
                            fine_tuning_args=fine_tuning_args,
-                           train_docs=list(datasets.get_aida_docs(split="train", include_gold_label=True)),
+                           train_docs=list(datasets.get_custom_dataset_name_docs_ShareClef(split="train", include_gold_label=True)),
                            evaluation_dataset_name_to_docs=evaluation_dataset_name_to_docs)
 
 
-def start_fine_tuning_task(refined: 'Refined', train_docs: Iterable[Doc],
-                           evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc]],
+def start_fine_tuning_task(refined: 'Refined_UMLS', train_docs: Iterable[Doc_UMLS],
+                           evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc_UMLS]],
                            fine_tuning_args: FineTuningArgs):
     LOG.info("Fine-tuning end-to-end EL" if fine_tuning_args.el else "Fine-tuning ED only.")
     train_docs = list(train_docs)
-    training_dataset = DocDataset(
+    training_dataset = DocDataset_UMLS(
         docs=train_docs,
         preprocessor=refined.preprocessor
     )
@@ -100,7 +100,7 @@ def start_fine_tuning_task(refined: 'Refined', train_docs: Iterable[Doc],
 
 
 def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs, training_dataloader: DataLoader,
-                          optimizer: AdamW, scheduler, evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc]],
+                          optimizer: AdamW, scheduler, evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc_UMLS]],
                           checkpoint_every_n_steps: int = 1000000, scaler: GradScaler = GradScaler()):
     model = refined.model
     best_f1 = 0.0
@@ -148,12 +148,12 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                                                scheduler=scheduler)
 
 
-def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc]],
+def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc_UMLS]],
                                  fine_tuning_args: TrainingArgs, refined: Refined_UMLS, optimizer: AdamW,
                                  scaler: GradScaler,
                                  scheduler):
     torch.cuda.empty_cache()
-    evaluation_metrics = evaluate_UMLS(refined=refined,
+    evaluation_metrics = evaluate(refined=refined,
                                   evaluation_dataset_name_to_docs=evaluation_dataset_name_to_docs,
                                   el=fine_tuning_args.el,  # only evaluate EL when training EL
                                   ed=True,  # always evaluate standalone ED
@@ -192,7 +192,7 @@ def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs
     return best_f1
 
 
-def fine_tune_on_docs(refined: Refined, train_docs: Iterable[Doc], eval_docs: Iterable[Doc],
+def fine_tune_on_docs(refined: Refined_UMLS, train_docs: Iterable[Doc_UMLS], eval_docs: Iterable[Doc],
                       fine_tuning_args: Optional[FineTuningArgs] = None):
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     if fine_tuning_args is None:
