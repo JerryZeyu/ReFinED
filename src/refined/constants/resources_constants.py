@@ -5,6 +5,57 @@ s3_resource_prefix = "2022_oct/"
 s3_datasets_prefix = "2022_oct/datasets/"
 
 # TODO: add a class for resource s3_bucket, s3_key, local_filename, needed_for_inference
+DATA_FILES_UMLS = {
+    "roberta_base_model": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/roberta-base/pytorch_model.bin",
+        "local_filename": "roberta-base/pytorch_model.bin",
+        "needed_for_inference": True
+    },
+    "roberta_base_model_config": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/roberta-base/config.json",
+        "local_filename": "roberta-base/config.json",
+        "needed_for_inference": True
+    },
+    "roberta_base_vocab": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/roberta-base/vocab.json",
+        "local_filename": "roberta-base/vocab.json",
+        "needed_for_inference": True
+    },
+    "roberta_base_tokenizer_merges": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/roberta-base/merges.txt",
+        "local_filename": "roberta-base/merges.txt",
+        "needed_for_inference": True
+    },
+
+    "qcode_to_label": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/qcode_to_label.json",
+        "local_filename": "UMLS_data/qcode_to_label.json",
+        "needed_for_inference": False
+    },
+    "descriptions_tns": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/descriptions_tns.pt",
+        "local_filename": "UMLS_data/descriptions_tns.pt",
+        "needed_for_inference": False  # only needed if use_precomputed_desc_embedding=False
+    },
+    "qcode_to_wiki": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/qcode_to_wiki.lmdb",
+        "local_filename": "UMLS_data/qcode_to_wiki.lmdb",
+        "needed_for_inference": False  # only needed if map to Wikipedia titles
+    },
+    "nltk_sentence_splitter_english": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "UMLS_data/nltk_sentence_splitter_english.pickle",
+        "local_filename": "UMLS_data/nltk_sentence_splitter_english.pickle",
+        "needed_for_inference": True  # only needed if map to Wikipedia titles
+    }
+}
 
 DATA_FILES_WIKIDATA = {
     "roberta_base_model": {

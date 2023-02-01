@@ -9,7 +9,7 @@ from transformers import (
     PreTrainedTokenizerFast,
 )
 
-from refined.data_types.base_types import Span
+from refined.data_types.base_types import Span, Span_UMLS
 
 
 def split_interval(start: int, end: int, num_splits: int = 1) -> List[List[int]]:
@@ -246,6 +246,13 @@ def sort_spans(spans: Optional[List[Span]]):
     if spans is not None:
         spans.sort(key=lambda x: x.start)
 
+def sort_spans_umls(spans: Optional[List[Span_UMLS]]):
+    """
+    In-place sort spans
+    :param spans: spans
+    """
+    if spans is not None:
+        spans.sort(key=lambda x: x.start)
 
 def wc(filename: str) -> int:
     return int(subprocess.check_output(["wc", "-l", filename]).split()[0])

@@ -1,12 +1,21 @@
 import json
 from typing import Iterable
-
-from refined.data_types.doc_types import Doc
-from refined.data_types.base_types import Entity, Span
+import os
+import pickle
+from refined.data_types.doc_types import Doc, Doc_UMLS
+from refined.data_types.base_types import Entity, Entity_UMLS, Span, Span_UMLS
 from refined.doc_preprocessing.preprocessor import Preprocessor
 from refined.resource_management.resource_manager import ResourceManager
 from refined.doc_preprocessing.wikidata_mapper import WikidataMapper
-
+def pickle_load_large_file(filepath):
+    max_bytes = 2**31 - 1
+    input_size = os.path.getsize(filepath)
+    bytes_in = bytearray(0)
+    with open(filepath, 'rb') as f_in:
+        for _ in range(0, input_size, max_bytes):
+            bytes_in += f_in.read(max_bytes)
+    obj = pickle.loads(bytes_in)
+    return obj
 
 class Datasets:
     def __init__(self,
@@ -307,3 +316,89 @@ class Datasets:
                     )
                 yield Doc.from_text_with_spans(text=text, spans=spans, preprocessor=self.preprocessor,
                                                md_spans=md_spans)
+
+class Datasets_BioNorm:
+    def __init__(self,
+                 preprocessor: Preprocessor
+                 ):
+        self.preprocessor = preprocessor
+    def get_custom_dataset_name_docs_ShareClef(
+            self,
+            split: str,
+            include_spans: bool = True,
+            include_gold_label: bool = True,
+            filter_not_in_kb: bool = True,
+            include_mentions_for_nil: bool = True,
+    ) -> Iterable[Doc_UMLS]:
+        split_to_name = {
+            "train": "Corpus_bionorm/ShareClef/train_docID2context.pkl",
+            "dev": "Corpus_bionorm/ShareClef/dev_docID2context.pkl",
+            "test": "Corpus_bionorm/ShareClef/test_docID2context.pkl",
+        }
+        split_to_name_mentions = {
+            "train": "Corpus_bionorm/ShareClef/train_docID2mentions.pkl",
+            "dev": "Corpus_bionorm/ShareClef/dev_docID2mentions.pkl",
+            "test": "Corpus_bionorm/ShareClef/test_docID2mentions.pkl",
+        }
+        assert split in split_to_name, "split must be in {train, dev, test}"
+        umlsID2wikidataID = pickle_load_large_file("Corpus_bionorm/umlsID2wikidataID.pkl")
+        umlsID2wikiTitle = pickle_load_large_file("Corpus_bionorm/umlsID2wikiTitle.pkl")
+        filename = split_to_name[split]
+        filename_mentions = split_to_name_mentions[split]
+        docID2context = pickle_load_large_file(filename)
+        docID2mentions = pickle_load_large_file(filename_mentions)
+        # print(docID2mentions)
+        for docID in docID2context.keys():
+            text = docID2context[docID]
+            spans = None
+            md_spans = None
+            if include_spans:
+                spans = []
+                md_spans = []
+                for span in docID2mentions[docID]:
+                    print(span)
+                    umlsID = span[3]
+                    md_spans.append(
+                        Span(
+                            start=int(span[1]),
+                            ln=int(span[2]) - int(span[1]),
+                            text=text[int(span[1]):int(span[2])],
+                            coarse_type="MENTION"
+                        )
+                    )
+                    title = text[int(span[1]):int(span[2])]
+
+                    if include_gold_label:
+                        spans.append(
+                            Span_UMLS(
+                                start=int(span[1]),
+                                ln=int(span[2]) - int(span[1]),
+                                text=text[int(span[1]):int(span[2])],
+                                gold_entity=Entity_UMLS(umls_entity_id=umlsID, umls_entity_title=title),
+                                coarse_type="MENTION",
+                                doc_id = docID
+                            )
+                        )
+                    else:
+
+                        spans.append(
+                            Span_UMLS(
+                                start=span["start"],
+                                ln=span["length"],
+                                text=text[span["start"]: span["start"] + span["length"]],
+                                coarse_type="MENTION",
+                                doc_id = docID
+                            )
+                        )
+                        # print([(span.text, span.start, span.gold_entity.wikidata_entity_id) for span in spans])
+                        # print(md_spans)
+                        # print("****************")
+            if spans is None:
+                yield Doc_UMLS.from_text(
+                        text=text,
+                        preprocessor=self.preprocessor
+                    )
+            else:
+                yield Doc_UMLS.from_text_with_spans(
+                        text=text, spans=spans, preprocessor=self.preprocessor, doc_id=docID
+                    )

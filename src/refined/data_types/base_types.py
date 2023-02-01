@@ -75,7 +75,22 @@ class Entity:
             return 'Entity(' + ', '.join([f'{var}={val}' for var, val in vars(self).items() if val is not None]) + ')'
         else:
             return 'Entity not linked to a knowledge base'
+@dataclass
+class Entity_UMLS:
+    umls_entity_id: Optional[str] = None
+    umls_entity_title: Optional[str] = None
+    human_readable_name: Optional[str] = None  # such as Wikipedia title or Wikidata label
+    parsed_string: Optional[str] = None
 
+    def __post_init__(self):
+        if self.umls_entity_id == 'Q-1':
+            self.umls_entity_id = None
+
+    def __repr__(self):
+        if len([v for v in vars(self).values() if v is not None]) > 0:
+            return 'Entity(' + ', '.join([f'{var}={val}' for var, val in vars(self).items() if val is not None]) + ')'
+        else:
+            return 'Entity not linked to a knowledge base'
 
 @dataclass
 class Span:
@@ -107,6 +122,42 @@ class Span:
     coarse_type: Optional[str] = "MENTION"  # High level types such as (MENTION, DATE)
     coarse_mention_type: Optional[str] = None  # OntoNotes/spaCy types for mentions (ORG, LOC, PERSON)
     date: Optional[Date] = None  # if the span represents a date this object parses the date
+    failed_class_check: Optional[bool] = None  # Indicates predicted class and actual entity class mismatch
+
+    # can be used to filter candidates to a given set (optional)
+    pruned_candidates: Optional[Set[str]] = None
+
+    def __repr__(self) -> str:
+        return str([self.text, self.predicted_entity, self.coarse_mention_type])
+
+@dataclass
+class Span_UMLS:
+    """
+    Represents a span (entity-mention) of text in a document, `Doc`.
+    """
+
+    # basic information
+    text: str  # text of the span (must match text defined by indices/offsets)
+    start: int  # start character offset in `Doc`
+    ln: int  # length of span (number of characters) in `Doc`
+
+    # The document ID for the document where the span was found.
+    doc_id: Optional[str] = None
+
+    # gold entity (i.e. labelled entity in a dataset) used for model training
+    gold_entity: Optional[Entity_UMLS] = None
+
+    # candidate entities (entities that the model considers)
+    # can be manually provided (when providing spans to process_text())
+    # or added by the library
+    candidate_entities: Optional[List[Tuple[Entity_UMLS, float]]] = None
+
+    # results of model inference
+    predicted_entity: Optional[Entity_UMLS] = None
+    entity_linking_model_confidence_score: Optional[float] = None
+    top_k_predicted_entities: Optional[Tuple[List[Entity_UMLS], float]] = None
+    coarse_type: Optional[str] = "MENTION"  # High level types such as (MENTION, DATE)
+    coarse_mention_type: Optional[str] = None  # OntoNotes/spaCy types for mentions (ORG, LOC, PERSON)
     failed_class_check: Optional[bool] = None  # Indicates predicted class and actual entity class mismatch
 
     # can be used to filter candidates to a given set (optional)

@@ -36,7 +36,7 @@ class TrainingArgs:
     restore_model_path: Optional[str] = None
     # This can be either 'wikipedia' or 'wikidata'. It is the entity set that model is considering when performing
     # entity linking.
-    entity_set: str = 'wikipedia'
+    entity_set: str = 'wikidata'
 
     data_dir: str = os.path.join(os.path.expanduser('~'), '.cache', 'refined')
     debug: bool = False
@@ -46,7 +46,7 @@ class TrainingArgs:
     mask_random_prob: float = 0.05
     candidate_dropout: float = 0.0
     max_mentions: int = 25
-    download_files: bool = True
+    download_files: bool = False
     checkpoint_every_n_steps: int = 2000
     resume: bool = False  # Resume training with same optimizer, scheduler, scaler (useful if previously crashed).
 

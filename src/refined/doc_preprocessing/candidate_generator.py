@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from random import sample
 from typing import Tuple, List, Any, Mapping, Set, Dict, Optional
-
-from refined.data_types.base_types import Span
+import numpy as np
+from refined.data_types.base_types import Span, Span_UMLS
 from refined.utilities.general_utils import unique
 from refined.resource_management.loaders import normalize_surface_form
-
-
+from refined.sapbert.model_wrapper import Model_Wrapper
+from refined.sapbert.utils import evaluate
 class CandidateGenerator(ABC):
 
     @abstractmethod
@@ -21,6 +21,13 @@ class CandidateGenerator(ABC):
 
     @abstractmethod
     def add_candidates_to_spans(self, spans: List[Span], **kwargs) -> Any:
+        """
+        Add candidate entities to spans in-place. Can return any object to maintain state.
+        """
+        pass
+
+    @abstractmethod
+    def add_candidates_to_spans_umls(self, spans: List[Span_UMLS], **kwargs) -> Any:
         """
         Add candidate entities to spans in-place. Can return any object to maintain state.
         """
@@ -157,3 +164,81 @@ class CandidateGeneratorExactMatch(CandidateGenerator):
             )
             span.candidate_entities = candidates_qcodes
         return person_coreference
+
+class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
+
+    def __init__(self, max_candidates: int, model_dir: str, index_path: str):
+        self.max_candidates = max_candidates
+        self.model_dir = model_dir
+        self.index_path = index_path
+
+        self.dictionary_path = "None"
+        self.data_dir = "None"
+
+        # Run settings
+        self.use_cuda = True
+        self.output_dir = "None"
+        self.save_predictions = True
+        # Tokenizer settings
+        self.max_length = 25
+
+        # options for COMETA
+        self.custom_query_loader = True
+
+        self.agg_mode = "cls"
+        self.model_wrapper = Model_Wrapper().load_model(
+            path=self.model_dir,
+            max_length=self.max_length,
+            use_cuda=self.use_cuda,
+        )
+    def get_candidates(
+            self,
+            surface_form: str,
+            sample_k_candidates: Optional[int] = None,
+            gold_qcode: Optional[str] = None
+    ) -> List[Tuple[str, float]]:
+        """
+        Generates a list of candidate entities for a surface form using a pem lookup. Person name coreference is done
+        by copying pem values from longer person name to short mentions of person name e.g. "Donald Trump" and "Trump".
+        :param surface_form: surface form to generate candidate for (does not need to be normalised)
+        :param person_coref_ref: person co-reference dictionary (keeps track of person names and part of names)
+        :param sample_k_candidates: randomly samples `k` candidates (hard, random, gold)
+        :param gold_qcode: gold_qcode only required when `sample_k_candidates` is provided
+        :return: (list of candidates with pem value, dictionary of person name to candidates with pem value).
+        """
+        # max_cands is only used to cap candidates when return
+        max_cands = sample_k_candidates if sample_k_candidates is not None else self.max_candidates
+
+        print("[loading custom queries...]")
+        eval_queries = np.array([(surface_form.lower())], dtype=object)
+        print("[custom queries loaded]")
+        print("[start evaluating...]")
+        results = evaluate(
+            model_wrapper=self.model_wrapper,
+            eval_dictionary=self.index_path,
+            eval_queries=eval_queries,
+            topk=max_cands,  # sort only the topk to save time
+            agg_mode=self.agg_mode
+        )
+        return results
+
+    def add_candidates_to_spans_umls(
+            self,
+            spans: List[Span_UMLS],
+            sample_k_candidates: Optional[int] = None
+    ) -> Dict[str, List[Tuple[str, float]]]:
+        """
+        Add candidate entities to spans
+        :param spans: list of spans
+        :param sample_k_candidates: randomly sample `k` candidates
+        """
+        text2candidates = {}
+        for span in spans:
+            candidates_umlsIDs = self.get_candidates(
+                surface_form=span.text,
+                sample_k_candidates=sample_k_candidates,
+                gold_qcode=span.gold_entity.umls_entity_id if sample_k_candidates else None
+            )
+            span.candidate_entities = candidates_umlsIDs
+            text2candidates[span.text] = candidates_umlsIDs
+        return text2candidates

@@ -130,6 +130,29 @@ class ResourceManager:
             )
         return data_files
 
+    def get_UMLS_data_files_info(self) -> Dict[str, Dict[str, str]]:
+        entity_set_to_files: Dict[str, Dict[str, Dict[str, str]]] = {
+            "wikidata": DATA_FILES_WIKIDATA,
+            "wikipedia": DATA_FILES_WIKIPEDIA
+        }
+
+        assert self.entity_set in entity_set_to_files, f"entity_set should be one of" \
+                                                       f" {entity_set_to_files.keys()} but " \
+                                                       f"is {self.entity_set}"
+        data_files = deepcopy(entity_set_to_files[self.entity_set])
+        if self.inference_ony:
+            data_files = {
+                resource_name: data_file for resource_name, data_file
+                in data_files.items() if data_file['needed_for_inference']
+                                         or ((resource_name == 'descriptions_tns' and self.load_descriptions_tns)
+                                             or (resource_name == 'qcode_to_wiki' and self.load_qcode_to_title))
+            }
+        for resource_name, resource_locations in data_files.items():
+            resource_locations['local_filename'] = os.path.join(
+                self.data_dir, resource_locations["local_filename"]
+            )
+        return data_files
+
     def get_additional_data_files_info(self) -> Dict[str, Dict[str, str]]:
         resource_to_file_path: Dict[str, Dict[str, str]] = deepcopy(ADDITIONAL_DATA_FILES)
         for resource_name, resource_locations in resource_to_file_path.items():
@@ -170,6 +193,9 @@ class ResourceManager:
         resource_to_file_path: Dict[str, Dict[str, str]] = self.get_data_files_info()
         return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
 
+    def get_UMLS_data_files(self) -> Dict[str, str]:
+        resource_to_file_path: Dict[str, Dict[str, str]] = self.get_UMLS_data_files_info()
+        return {k: v['local_filename'] for k, v in resource_to_file_path.items()}
     def get_model_files(self) -> Dict[str, str]:
         resource_to_file_path: Dict[str, Dict[str, str]] = self.get_model_files_info()
         return {k: v['local_filename'] for k, v in resource_to_file_path.items()}

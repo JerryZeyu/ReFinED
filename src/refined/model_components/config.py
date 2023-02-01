@@ -24,6 +24,12 @@ NER_TAG_TO_IX = {
     "I-MENTION": 16
 }
 
+NER_TAG_TO_IX_UMLS = {
+    "O": 0,
+    "B-MENTION": 1,
+    "I-MENTION": 2
+}
+
 
 @dataclass
 class ModelConfig:
@@ -58,6 +64,7 @@ class ModelConfig:
     vocab_size: Optional[int] = None
 
     ner_tag_to_ix: Dict[str, int] = field(default_factory=lambda: NER_TAG_TO_IX)
+    ner_tag_to_ix_umls: Dict[str, int] = field(default_factory=lambda: NER_TAG_TO_IX_UMLS)
 
     def __post_init__(self):
         tokenizer = get_tokenizer(transformer_name=self.transformer_name, data_dir=self.data_dir)
