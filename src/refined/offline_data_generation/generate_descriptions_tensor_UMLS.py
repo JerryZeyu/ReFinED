@@ -61,5 +61,5 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
 OUTPUT_PATH = "data/Corpus_bionorm/UMLS"
 create_description_tensor(output_path=OUTPUT_PATH,
                         umlsID_to_idx_filename=os.path.join(OUTPUT_PATH, 'umlsID_to_idx.json'),
-                        desc_filename=os.path.join(OUTPUT_PATH, 'umlsID2desc.json'),
-                        label_filename=os.path.join(OUTPUT_PATH, 'umlsID2title.json'))
+                        desc_filename=os.path.join(OUTPUT_PATH, 'umlsID2desc.pkl'),
+                        label_filename=os.path.join(OUTPUT_PATH, 'umlsID2title.pkl'))
