@@ -132,7 +132,7 @@ class ResourceManager:
 
     def get_UMLS_data_files_info(self) -> Dict[str, Dict[str, str]]:
         entity_set_to_files: Dict[str, Dict[str, Dict[str, str]]] = {
-            "umlsdata": DATA_FILES_UMLS
+            "umls": DATA_FILES_UMLS
         }
 
         assert self.entity_set in entity_set_to_files, f"entity_set should be one of" \
