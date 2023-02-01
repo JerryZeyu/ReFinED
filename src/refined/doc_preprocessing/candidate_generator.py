@@ -221,7 +221,15 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
             agg_mode=self.agg_mode
         )
         return results
-
+    def add_candidates_to_spans(
+            self,
+            spans: List[Span],
+            backward_coref: bool = False,
+            person_coreference: Optional[Dict[str, List[Tuple[str, float]]]] = None,
+            sample_k_candidates: Optional[int] = None
+    ) -> Dict[str, List[Tuple[str, float]]]:
+        temp = {"a":[("1", 1.000)]}
+        return temp
     def add_candidates_to_spans_umls(
             self,
             spans: List[Span_UMLS],

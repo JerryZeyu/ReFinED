@@ -34,7 +34,7 @@ def main():
 
     training_args = parse_training_args()
 
-    print("***********1")
+    print("***********3")
     preprocessor = PreprocessorInferenceOnly_UMLS(
         data_dir=training_args.data_dir,
         debug=training_args.debug,

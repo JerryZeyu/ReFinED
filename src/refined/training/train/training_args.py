@@ -86,7 +86,9 @@ class TrainingArgs:
 
 
 def parse_training_args() -> TrainingArgs:
+    print("***********1")
     training_args = TrainingArgs()
+    print("***********2")
     parser = ArgumentParser("This script is used to train the model for end-to-end EL or ED.")
     parser.add_argument(
         "--experiment_name",
