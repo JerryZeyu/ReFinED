@@ -13,7 +13,15 @@ from refined.resource_management.lmdb_wrapper import LmdbImmutableDict
 from refined.resource_management.loaders import load_human_qcode
 import os
 
-
+def pickle_load_large_file(filepath):
+    max_bytes = 2**31 - 1
+    input_size = os.path.getsize(filepath)
+    bytes_in = bytearray(0)
+    with open(filepath, 'rb') as f_in:
+        for _ in range(0, input_size, max_bytes):
+            bytes_in += f_in.read(max_bytes)
+    obj = pickle.loads(bytes_in)
+    return obj
 class LookupsInferenceOnly:
 
     def __init__(self, entity_set: str, data_dir: str, use_precomputed_description_embeddings: bool = True,
@@ -108,12 +116,8 @@ class LookupsInferenceOnly_UMLS:
                                            load_descriptions_tns=not use_precomputed_description_embeddings,
                                            load_qcode_to_title=return_titles
                                            )
-        resource_to_file_path = resource_manager.get_data_files()
+        resource_to_file_path = resource_manager.get_UMLS_data_files()
         self.resource_to_file_path = resource_to_file_path
-
-        # replace all get_file and download_if needed
-        # always use resource names that are provided instead of relying on same data_dirs
-        # shape = (num_ents, max_num_classes)
 
         if not self.use_precomputed_description_embeddings:
             with open(resource_to_file_path["descriptions_tns"], "rb") as f:
@@ -123,32 +127,14 @@ class LookupsInferenceOnly_UMLS:
             # TODO: convert to numpy memmap to save space during training with multiple workers
             self.descriptions_tns = None
 
-        # self.pem: Mapping[str, List[Tuple[str, float]]] = LmdbImmutableDict(resource_to_file_path["wiki_pem"])
-        self.index_path = os.path.join(data_dir, "dict_dense_embeds_snomed_disorder_withAbbreviation.pickle")
-        self.model_dir = os.path.join(data_dir, "model_dir")
-        # with open(resource_to_file_path["class_to_label"], "r") as f:
-        #     self.class_to_label: Dict[str, Any] = json.load(f)
-        #
-        # self.human_qcodes: Set[str] = load_human_qcode(resource_to_file_path["human_qcodes"])
-        #
-        # self.subclasses: Mapping[str, List[str]] = LmdbImmutableDict(resource_to_file_path["subclasses"])
-        #
-        # self.qcode_to_idx: Mapping[str, int] = LmdbImmutableDict(resource_to_file_path["qcode_to_idx"])
-        #
-        # with open(resource_to_file_path["class_to_idx"], "r") as f:
-        #     self.class_to_idx = json.load(f)
-
-        # self.index_to_class = {y: x for x, y in self.class_to_idx.items()}
-        # self.classes = list(self.class_to_idx.keys())
-        # self.max_num_classes_per_ent = self.qcode_idx_to_class_idx.shape[1]
-        # self.num_classes = len(self.class_to_idx)
-
+        self.index_path = resource_to_file_path["sapbert_index_path"]
+        self.model_dir = resource_to_file_path["sapbert_model"]
         if return_titles:
-            self.qcode_to_wiki: Mapping[str, str] = LmdbImmutableDict(resource_to_file_path["qcode_to_wiki"])
+            self.umlsID_to_title: Dict[str, str] = pickle_load_large_file(resource_to_file_path["umls_to_title"])
         else:
-            self.qcode_to_wiki = None
+            self.umlsID_to_title = None
 
-        with open("nltk_sentence_splitter_english.pickle", 'rb') as f:
+        with open(resource_to_file_path["nltk_sentence_splitter_english"], 'rb') as f:
             self.nltk_sentence_splitter_english: PunktSentenceTokenizer = pickle.load(f)
 
         # can be shared

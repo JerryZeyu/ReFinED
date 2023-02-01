@@ -6,9 +6,9 @@ import numpy as np
 import torch
 from transformers import PreTrainedTokenizer, PretrainedConfig, PreTrainedModel
 
-from refined.doc_preprocessing.candidate_generator import CandidateGenerator, CandidateGeneratorExactMatch_usingSAPBERT
+from refined.doc_preprocessing.candidate_generator import CandidateGenerator, CandidateGeneratorExactMatch, CandidateGeneratorExactMatch_usingSAPBERT
 from refined.doc_preprocessing.class_handler import ClassHandler
-from refined.resource_management.data_lookups import LookupsInferenceOnly_UMLS
+from refined.resource_management.data_lookups import LookupsInferenceOnly, LookupsInferenceOnly_UMLS
 from refined.data_types.base_types import Token, Span, Span_UMLS
 from refined.resource_management.resource_manager import ResourceManager, get_mmap_shape
 from refined.model_components.config import ModelConfig
@@ -426,28 +426,16 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
             return_titles=return_titles
         )
         self.tokenizer = self.lookups.tokenizers
-        # self.qcode_to_idx = self.lookups.qcode_to_idx
-        # self.class_to_idx = self.lookups.class_to_idx
-        # self.class_to_label = self.lookups.class_to_label
-        # self.qcode_idx_to_class_idx = self.lookups.qcode_idx_to_class_idx
-        # self.index_to_class = self.lookups.index_to_class
-        # self.num_classes = len(self.class_to_idx)
         # `descriptions_tns` is None when use_precomputed_description_embeddings is True
         self.descriptions_tns = self.lookups.descriptions_tns
-        # self.qcode_to_wiki = self.lookups.qcode_to_wiki
+        self.umlsID_to_title = self.lookups.umlsID_to_title
         self.nltk_sentence_splitter_english = self.lookups.nltk_sentence_splitter_english
         self.transformer_config = self.lookups.transformer_model_config
-        # self.max_num_classes_per_ent = self.qcode_idx_to_class_idx.shape[1]
-        # self.class_handler = ClassHandler(subclasses=self.lookups.subclasses,
-        #                                   qcode_to_idx=self.qcode_to_idx,
-        #                                   index_to_class=self.index_to_class,
-        #                                   qcode_idx_to_class_idx=self.qcode_idx_to_class_idx)
         self.candidate_generator: CandidateGenerator = CandidateGeneratorExactMatch_usingSAPBERT(
             max_candidates=max_candidates,
-            model_dir = self.lookups.model_dir,
+            model_dir=self.lookups.model_dir,
             index_path=self.lookups.index_path,
         )
-        # self.human_qcodes = self.lookups.human_qcodes
 
         if self.use_precomputed_description_embeddings:
             # (num_ents, description_embeddings_dim)

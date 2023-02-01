@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 from typing import Dict, Tuple, Optional
 
-from refined.constants.resources_constants import DATA_FILES_WIKIDATA, DATA_FILES_WIKIPEDIA, DATASET_DATA_FILES, \
+from refined.constants.resources_constants import DATA_FILES_WIKIDATA, DATA_FILES_WIKIPEDIA, DATA_FILES_UMLS, DATASET_DATA_FILES, \
     ADDITIONAL_DATA_FILES, model_name_to_files, TRAINING_DATA_FILES
 from refined.resource_management.aws import S3Manager
 
@@ -132,8 +132,7 @@ class ResourceManager:
 
     def get_UMLS_data_files_info(self) -> Dict[str, Dict[str, str]]:
         entity_set_to_files: Dict[str, Dict[str, Dict[str, str]]] = {
-            "wikidata": DATA_FILES_WIKIDATA,
-            "wikipedia": DATA_FILES_WIKIPEDIA
+            "umlsdata": DATA_FILES_UMLS
         }
 
         assert self.entity_set in entity_set_to_files, f"entity_set should be one of" \

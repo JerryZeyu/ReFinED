@@ -30,24 +30,29 @@ DATA_FILES_UMLS = {
         "local_filename": "roberta-base/merges.txt",
         "needed_for_inference": True
     },
-
-    "qcode_to_label": {
-        "s3_bucket": s3_resource_bucket,
-        "s3_key": s3_resource_prefix + "UMLS_data/qcode_to_label.json",
-        "local_filename": "UMLS_data/qcode_to_label.json",
-        "needed_for_inference": False
-    },
     "descriptions_tns": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/descriptions_tns.pt",
         "local_filename": "UMLS_data/descriptions_tns.pt",
         "needed_for_inference": False  # only needed if use_precomputed_desc_embedding=False
     },
-    "qcode_to_wiki": {
+    "umls_to_title": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/qcode_to_wiki.lmdb",
-        "local_filename": "UMLS_data/qcode_to_wiki.lmdb",
+        "local_filename": "Corpus_bionorm/UMLS/umlsID2title.pkl",
         "needed_for_inference": False  # only needed if map to Wikipedia titles
+    },
+    "sapbert_model": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "sapbert/sapbert_finetune",
+        "local_filename": "sapbert/sapbert_finetune",
+        "needed_for_inference": True
+    },
+    "sapbert_index_path": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "sapbert/dict_dense_embeds_snomed_disorder_withAbbreviation.pkl",
+        "local_filename": "sapbert/dict_dense_embeds_snomed_disorder_withAbbreviation.pkl",
+        "needed_for_inference": True
     },
     "nltk_sentence_splitter_english": {
         "s3_bucket": s3_resource_bucket,
