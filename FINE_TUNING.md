@@ -3,6 +3,7 @@
 ReFinED was trained to perform entity linking (EL) on the entirety on English Wikipedia. This means the model will perform very well when the document text is similar to the kind of text that appears on Wikipedia.
 However, performance can be improved on other domains by fine-tuning the model on a relevant dataset. The same is true if the kind of entities to detect/link differs from the kind of entities hyperlinked on Wikipedia.
 
+
 ## Fine-tuning instructions
 1. Ensure the ReFinED source directory is in your Python path:
 ```
@@ -14,7 +15,7 @@ python3 src/refined/training/fine_tune.py --experiment_name test
 ```
 
 The `fine_tune.py` script will automatically download the training and development split for the CoNLL-AIDA dataset and 
-use this for fine-tuning and evaluation. The default arguments are the ones used to produce the results reported in the ReFinED (NAACL 2022) paper.
+use this for fine-tuning and evaluation. The default arguments are the ones used to produce the results reported in the ReFinED (NAACL 2022) paper
 
 ## Using a fine-tuned model
 To use a fine-tuned model provide the file path to the directory containing the fine-tuned model (requires `model.pt` and `config.json` files) to the refined.from_pretrained(...) method as follows:

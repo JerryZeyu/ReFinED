@@ -83,7 +83,7 @@ class Entity_UMLS:
     parsed_string: Optional[str] = None
 
     def __post_init__(self):
-        if self.umls_entity_id == 'Q-1':
+        if self.umls_entity_id == 'Q-0':
             self.umls_entity_id = None
 
     def __repr__(self):
