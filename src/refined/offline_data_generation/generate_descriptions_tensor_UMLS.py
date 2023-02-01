@@ -1,13 +1,11 @@
 import os
-from typing import List, Optional
 import pickle
 import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
+from typing import Dict
 
-from refined.offline_data_generation.dataclasses_for_preprocessing import AdditionalEntity
-from refined.resource_management.loaders import load_labels, load_wikipedia_to_qcode, load_descriptions, \
-    load_qcode_to_idx
+import ujson
 def pickle_load_large_file(filepath):
     max_bytes = 2**31 - 1
     input_size = os.path.getsize(filepath)
@@ -17,7 +15,19 @@ def pickle_load_large_file(filepath):
             bytes_in += f_in.read(max_bytes)
     obj = pickle.loads(bytes_in)
     return obj
-
+def load_umlsID_to_idx(filename: str, is_test: bool = False) -> Dict[str, int]:
+    umlsID_to_idx: Dict[str, int] = dict()
+    line_num = 0
+    with open(filename, "r") as f:
+        for line in tqdm(f, total=6000000, desc="Loading qcode_to_idx"):
+            line = ujson.loads(line)
+            umlsID = line["umlsID"]
+            idx = line["index"]
+            umlsID_to_idx[umlsID] = idx
+            line_num += 1
+            if is_test and line_num > 1000:
+                break
+    return umlsID_to_idx
 # TODO FIX THIS SO IT USES CORRECT QCODE_TO_IDX
 def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, desc_filename: str, label_filename: str,
                               tokeniser: str = 'roberta-base', is_test: bool = False,
@@ -25,7 +35,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
     labels = pickle_load_large_file(label_filename)
     umlsIDs = list(labels.keys())
     descriptions = pickle_load_large_file(desc_filename)
-    umlsID_to_idx = load_qcode_to_idx(umlsID_to_idx_filename)
+    umlsID_to_idx = load_umlsID_to_idx(umlsID_to_idx_filename)
 
 
     # TODO: check no extra [SEP] tokens between label and description or extra [CLS] or [SEP] at end
