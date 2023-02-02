@@ -853,12 +853,11 @@ class RefinedModel_UMLS(nn.Module):
                     ed_loss=None,
                     ed_activations=torch.zeros([num_ents, self.preprocessor.max_candidates + 1], device=current_device),
                     entity_spans=[],
-                    other_spans=other_spans,
                     cand_ids=torch.zeros([num_ents, self.preprocessor.max_candidates], device=current_device,
                                          dtype=torch.long),
                     description_loss=None,
                     candidate_description_scores=torch.zeros([num_ents, self.preprocessor.max_candidates + 1],
-                                                             device=current_device),
+                                                             device=current_device)
                 )
                 # return ModelReturn(md_loss, md_activations, None, None, None, None, [], other_spans, None, None, None)
             (
@@ -942,10 +941,9 @@ class RefinedModel_UMLS(nn.Module):
             ed_loss,
             ed_activations,
             entity_spans,
-            other_spans,
             cand_ids,
             description_loss,
-            candidate_description_scores,
+            candidate_description_scores
         )
 
     def _get_mention_embeddings(
