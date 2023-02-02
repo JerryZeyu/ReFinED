@@ -53,6 +53,10 @@ def process_annotated_document(
         # pred_spans is used for linkable mentions only
         if span.coarse_type != "MENTION":
             continue
+        print("span.predicted_entity.umls_entity_id: ", span.predicted_entity.umls_entity_id)
+        print("span.entity_linking_model_confidence_score: ", span.entity_linking_model_confidence_score)
+        print(span.top_k_predicted_entities)
+        print("***************************")
         if (
                 span.predicted_entity.umls_entity_id is None
                 or span.entity_linking_model_confidence_score < ed_threshold
