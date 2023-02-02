@@ -870,7 +870,6 @@ class RefinedModel_UMLS(nn.Module):
             candidate_entity_targets = batch.candidate_target_values
             print("cand_ids: ", cand_ids)
             print("candidate_entity_targets: ", candidate_entity_targets)
-            print("*******************")
         else:
             # token_acc_sums, entity_mask, entity_spans, other_spans, candidate_tensors
             token_acc_sums = batch.token_acc_sum_values
