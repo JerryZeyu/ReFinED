@@ -100,7 +100,7 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
             temp = [item[0] for item in dict_candidates_final]
             if cand not in temp:
                 dict_candidates_final.append((cand, cand_score))
-        queries.append(dict_candidates_final)
+        queries.append(dict_candidates_final[0:topk])
 
 
     return queries[0]
