@@ -201,6 +201,11 @@ class EntityDisambiguation_withoutET(nn.Module):
 
         # consider that gold entity is masked (multiply by 0 prevents this)
         logits_with_none_above = logits_with_none_above * candidate_mask_zero + candidate_mask
+        print("logits: ", logits)
+        print("logits_with_none_above: ", logits_with_none_above)
+        print("candidate_mask: ", candidate_mask)
+        print("candidate_mask_zero: ", candidate_mask_zero)
+        print("logits_with_none_above: ", logits_with_none_above)
         # TODO: go back to above
         # just changed
         # logits_with_none_above = logits_with_none_above + candidate_mask

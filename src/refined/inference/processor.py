@@ -834,6 +834,7 @@ class Refined_UMLS(object):
         predicted_entity_ids = (
             cand_ids[torch.arange(cand_ids.size(0)), ed_targets_predictions].cpu().numpy().tolist()
         )
+        print("ed_activations: ", output.ed_activations)
         print("ed_targets_predictions: ", ed_targets_predictions)
         print("predicted_entity_ids: ", predicted_entity_ids)
         print("*******************")
