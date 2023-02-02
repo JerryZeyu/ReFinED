@@ -1105,13 +1105,13 @@ class RefinedModel_UMLS(nn.Module):
         num_cands = self.preprocessor.max_candidates
 
         if self.use_precomputed_descriptions:
-            b_cand_desc_emb = self.preprocessor.get_descriptions_emb_for_qcode_batch(
+            b_cand_desc_emb = self.preprocessor.get_descriptions_emb_for_umlsID_batch(
                 candidate_umlsIDs, shape=(num_ents, num_cands, -1)
             ).to(device)
             b_cand_desc = None
         else:
             b_cand_desc_emb = None
-            b_cand_desc = self.preprocessor.get_descriptions_for_qcode_batch(
+            b_cand_desc = self.preprocessor.get_descriptions_for_umlsID_batch(
                 candidate_umlsIDs, shape=(num_ents, num_cands, -1)
             ).to(device)
 
