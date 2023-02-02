@@ -40,7 +40,6 @@ def main():
                                        entity_set=training_args.entity_set,
                                        model_name=None
                                        )
-    print("training_args.num_candidates_train: ", training_args.num_candidates_train)
     preprocessor = PreprocessorInferenceOnly_UMLS(
         data_dir=training_args.data_dir,
         debug=training_args.debug,

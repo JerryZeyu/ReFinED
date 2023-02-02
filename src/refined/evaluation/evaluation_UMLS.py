@@ -29,10 +29,10 @@ def process_annotated_document(
     for span in doc.spans:
         if (span.gold_entity is None or span.gold_entity.umls_entity_id is None
             # only include entity spans that have been annotated as an entity in a KB
-                or span.gold_entity.wikidata_entity_id == "Q0"):
+                or span.gold_entity.umls_entity_id == "C0"):
             continue
         gold_spans.add((span.text, span.start, span.gold_entity.umls_entity_id))
-        if span.gold_entity.umls_entity_id in {qcode for qcode, _ in span.candidate_entities}:
+        if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
 
     # optionally filter NIL gold spans
