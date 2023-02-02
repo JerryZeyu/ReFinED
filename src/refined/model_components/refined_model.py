@@ -1049,6 +1049,7 @@ class RefinedModel_UMLS(nn.Module):
                 if current_page_title != prev_page_title:
                     person_coreference = dict()
             prev_page_title = current_page_title
+            print("span_for_batch: ", spans_for_batch)
             person_coreference = self.preprocessor.add_candidates_to_spans_umls(
                 spans_for_batch
             )
