@@ -34,7 +34,6 @@ def main():
 
     training_args = parse_training_args()
 
-    print("***********3")
     resource_manager = ResourceManager(S3Manager(),
                                        data_dir=training_args.data_dir,
                                        entity_set=training_args.entity_set,

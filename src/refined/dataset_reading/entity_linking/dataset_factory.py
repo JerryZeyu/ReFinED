@@ -349,7 +349,7 @@ class Datasets_BioNorm:
         docID2context = pickle_load_large_file(filename_context)
         docID2mentions = pickle_load_large_file(filename_mentions)
         # print(docID2mentions)
-        for docID in list(docID2context.keys())[0:20]:
+        for docID in docID2context.keys():
             text = docID2context[docID]
             spans = None
             md_spans = None
