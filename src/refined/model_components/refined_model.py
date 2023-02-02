@@ -844,6 +844,8 @@ class RefinedModel_UMLS(nn.Module):
                 md_activations=md_activations,
                 max_seq=batch.token_id_values.size(1)
             )
+            print("entity_spans: ", entity_spans)
+            print("*******************")
             if len(entity_spans) == 0:
                 # no point in continuing
                 num_ents = 0

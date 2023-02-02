@@ -36,7 +36,6 @@ def process_annotated_document(
             gold_entity_in_cands += 1
     print("gold_entity_in_cands: ", gold_entity_in_cands)
     print("el: ", el)
-    print("*******************")
 
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
