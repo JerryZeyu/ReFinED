@@ -1009,6 +1009,7 @@ class RefinedModel_UMLS(nn.Module):
         # (bs, max_seq_ln) - includes [SEP],[1:] removes [CLS]
         # very small tensor (e.g. (bs, max_seq) and simple operations so fine on CPU)
         bio_preds = (md_activations.argmax(dim=2) * attention_mask)[:, 1:].detach().cpu().numpy()
+        print("bio_preds: ", bio_preds)
         prev_page_title = None
         for batch_idx, batch_elem in enumerate(batch_elements):
             preds = [self.ix_to_ner_tag[p] for p in bio_preds[batch_idx].tolist()]
@@ -1030,12 +1031,12 @@ class RefinedModel_UMLS(nn.Module):
                     doc_id=batch_elem.doc_id
                 )
                 if coarse_type == "MENTION":
-                    # print("doc_char_start: ", doc_char_start)
-                    # print(span.start)
-                    # print("doc_char_end: ", doc_char_end)
-                    # print(span.ln)
-                    # print("span text: ", span.text)
-                    # print("span: ", span)
+                    print("doc_char_start: ", doc_char_start)
+                    print(span.start)
+                    print("doc_char_end: ", doc_char_end)
+                    print(span.ln)
+                    print("span text: ", span.text)
+                    print("span: ", span)
                     spans_for_batch.append(span)
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
