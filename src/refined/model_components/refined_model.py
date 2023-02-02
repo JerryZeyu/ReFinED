@@ -1028,6 +1028,9 @@ class RefinedModel_UMLS(nn.Module):
                     doc_id=batch_elem.doc_id
                 )
                 if coarse_type == "MENTION":
+                    print("doc_char_start: ", doc_char_start)
+                    print("doc_char_end: ", doc_char_end)
+                    print("span text: ", span.text)
                     spans_for_batch.append(span)
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
