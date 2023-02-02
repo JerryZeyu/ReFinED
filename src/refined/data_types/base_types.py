@@ -157,7 +157,7 @@ class Span_UMLS:
     entity_linking_model_confidence_score: Optional[float] = None
     top_k_predicted_entities: Optional[Tuple[List[Entity_UMLS], float]] = None
     coarse_type: Optional[str] = "MENTION"  # High level types such as (MENTION, DATE)
-    coarse_mention_type: Optional[str] = None  # OntoNotes/spaCy types for mentions (ORG, LOC, PERSON)
+    coarse_mention_type: Optional[str] = "MENTION"  # OntoNotes/spaCy types for mentions (ORG, LOC, PERSON)
     failed_class_check: Optional[bool] = None  # Indicates predicted class and actual entity class mismatch
 
     # can be used to filter candidates to a given set (optional)
