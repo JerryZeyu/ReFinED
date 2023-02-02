@@ -694,6 +694,7 @@ class Refined_UMLS(object):
         )
         self.model.eval()
         for batch_idx, batch in enumerate(tns):
+            print("batch: ", batch)
             batch_spans = self.process_tensors(batch=batch, ner_threshold=ner_threshold)
             all_spans.extend(batch_spans)
 
@@ -760,7 +761,6 @@ class Refined_UMLS(object):
         self.model.eval()
 
         for batch_idx, batch in enumerate(tns):
-            print("batch: ", batch)
             batch_spans = self.process_tensors(batch=batch, ner_threshold=ner_threshold)
             all_spans.extend(batch_spans)
 
