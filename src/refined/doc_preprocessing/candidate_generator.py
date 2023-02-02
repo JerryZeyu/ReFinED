@@ -218,6 +218,9 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
             topk=max_cands,  # sort only the topk to save time
             agg_mode=self.agg_mode
         )
+        print("candidates_num: ", len(results))
+        print("max_num: ", max_cands)
+        assert len(results) == 30
         return results
     def add_candidates_to_spans(
             self,
@@ -245,8 +248,6 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
                 sample_k_candidates=sample_k_candidates,
                 gold_qcode=span.gold_entity.umls_entity_id if sample_k_candidates else None
             )
-            print("candidates_num: ", len(candidates_umlsIDs))
-            assert len(candidates_umlsIDs) == 30
             span.candidate_entities = candidates_umlsIDs
             text2candidates[span.text] = candidates_umlsIDs
         return text2candidates
