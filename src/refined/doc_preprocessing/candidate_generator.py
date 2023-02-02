@@ -220,6 +220,7 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
         )
         print("candidates_num: ", len(results))
         print("max_num: ", max_cands)
+        print(sample_k_candidates)
         assert len(results) == 30
         return results
     def add_candidates_to_spans(
