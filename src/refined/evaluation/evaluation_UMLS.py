@@ -34,6 +34,9 @@ def process_annotated_document(
         gold_spans.add((span.text, span.start, span.gold_entity.umls_entity_id))
         if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
+        print("candidate entityes: ", [umlsID for umlsID, _ in span.candidate_entities])
+    print(gold_entity_in_cands)
+    print("*******************")
 
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
@@ -53,10 +56,10 @@ def process_annotated_document(
         # pred_spans is used for linkable mentions only
         if span.coarse_type != "MENTION":
             continue
-        print("span.predicted_entity.umls_entity_id: ", span.predicted_entity.umls_entity_id)
-        print("span.entity_linking_model_confidence_score: ", span.entity_linking_model_confidence_score)
-        print(span.top_k_predicted_entities)
-        print("***************************")
+        # print("span.predicted_entity.umls_entity_id: ", span.predicted_entity.umls_entity_id)
+        # print("span.entity_linking_model_confidence_score: ", span.entity_linking_model_confidence_score)
+        # print(span.top_k_predicted_entities)
+        # print("***************************")
         if (
                 span.predicted_entity.umls_entity_id is None
                 or span.entity_linking_model_confidence_score < ed_threshold
