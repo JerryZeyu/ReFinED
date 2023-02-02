@@ -791,7 +791,7 @@ class Refined_UMLS(object):
                 return []
         else:
             spans = None
-
+        print("spans: ", spans)
         if self.n_gpu == 1 or True:
             batch = batch.to(self.device)
         self.model.eval()
