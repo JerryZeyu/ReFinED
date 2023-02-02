@@ -60,6 +60,12 @@ DATA_FILES_UMLS = {
         "local_filename": "sapbert/dict_dense_embeds_snomed_disorder_withAbbreviation.pkl",
         "needed_for_inference": True
     },
+    "UMLS_dictionary_path": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_resource_prefix + "sapbert/test_dictionary_snomed_disorder_withAbbreviation.txt",
+        "local_filename": "sapbert/test_dictionary_snomed_disorder_withAbbreviation.txt",
+        "needed_for_inference": True
+    },
     "nltk_sentence_splitter_english": {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/nltk_sentence_splitter_english.pickle",

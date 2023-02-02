@@ -167,17 +167,14 @@ class CandidateGeneratorExactMatch(CandidateGenerator):
 
 class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
 
-    def __init__(self, max_candidates: int, model_dir: str, index_path: str):
+    def __init__(self, max_candidates: int, model_dir: str, index_path: str, umls_dic):
         self.max_candidates = max_candidates
         self.model_dir = model_dir
         self.index_path = index_path
-
-        self.dictionary_path = "None"
-        self.data_dir = "None"
+        self.umls_dic = umls_dic
 
         # Run settings
         self.use_cuda = True
-        self.output_dir = "None"
         self.save_predictions = True
         # Tokenizer settings
         self.max_length = 25
@@ -215,7 +212,8 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
         print("[start evaluating...]")
         results = evaluate(
             model_wrapper=self.model_wrapper,
-            eval_dictionary=self.index_path,
+            eval_dictionary=self.umls_dic,
+            eval_index=self.index_path,
             eval_queries=eval_queries,
             topk=max_cands,  # sort only the topk to save time
             agg_mode=self.agg_mode

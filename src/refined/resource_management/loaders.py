@@ -30,7 +30,22 @@ def load_qcode_to_idx(filename: str, is_test: bool = False) -> Dict[str, int]:
 
     return qcode_to_idx
 
+def load_UMLS_dictionary_data(dictionary_path):
+    name_cui_map = {}
+    data = []
+    with open(dictionary_path, mode='r', encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in tqdm(lines):
+            line = line.strip()
+            if line == "": continue
+            cui, name = line.split("||")
+            name = name.lower()
+            if cui.lower() == "cui-less": continue
+            data.append((name, cui))
 
+    # LOGGER.info("concerting loaded dictionary data to numpy array...")
+    # data = np.array(data)
+    return data
 def load_descriptions(
     filepath: str, qcodes: Optional[Set[str]] = None, is_test: bool = False,
     keep_all_entities: bool = True

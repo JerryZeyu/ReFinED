@@ -436,6 +436,7 @@ class PreprocessorInferenceOnly_UMLS(Preprocessor):
             max_candidates=max_candidates,
             model_dir=self.lookups.model_dir,
             index_path=self.lookups.index_path,
+            umls_dic=self.lookups.umls_dictionary
         )
 
         if self.use_precomputed_description_embeddings:

@@ -10,7 +10,7 @@ from refined.offline_data_generation.generate_descriptions_tensor_UMLS import lo
 from refined.resource_management.resource_manager import ResourceManager, get_mmap_shape
 from refined.resource_management.aws import S3Manager
 from refined.resource_management.lmdb_wrapper import LmdbImmutableDict
-from refined.resource_management.loaders import load_human_qcode
+from refined.resource_management.loaders import load_human_qcode, load_UMLS_dictionary_data
 import os
 import sys
 def pickle_dump_large_file(obj, filepath):
@@ -137,6 +137,7 @@ class LookupsInferenceOnly_UMLS:
         self.umlsID_to_idx = pickle_load_large_file(resource_to_file_path["umlsID_to_idx"])
 
         self.index_path = resource_to_file_path["sapbert_index_path"]
+        self.umls_dictionary = load_UMLS_dictionary_data(resource_to_file_path["UMLS_dictionary_path"])
         self.model_dir = resource_to_file_path["sapbert_model"]
         if return_titles:
             self.umlsID_to_title: Dict[str, str] = pickle_load_large_file(resource_to_file_path["umlsID_to_title"])
