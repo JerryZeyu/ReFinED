@@ -837,7 +837,7 @@ class RefinedModel_UMLS(nn.Module):
         # prepare tensors for ET and ED layers
         if batch.token_acc_sum_values is None:
             # mention-entity spans are not provided so the result from md layer must be used to determine spans
-            token_acc_sums, entity_mask, entity_spans, other_spans, candidate_tensors = self._identify_entity_mentions(
+            token_acc_sums, entity_mask, entity_spans, candidate_tensors = self._identify_entity_mentions(
                 attention_mask=batch.attention_mask_values,
                 batch_elements=batch_elements,
                 device=current_device,
@@ -863,7 +863,6 @@ class RefinedModel_UMLS(nn.Module):
             (
                 cand_ids,
                 candidate_pem_values,
-                candidate_classes,
                 cand_desc,
                 cand_desc_emb,
             ) = candidate_tensors
@@ -902,7 +901,6 @@ class RefinedModel_UMLS(nn.Module):
             # the dataset are standard entity spans
             # TODO: may want to change this in the future so special spans can be provided
             entity_spans = [span for b in batch_elements for span in b.spans]
-            other_spans = {}
 
         # class_targets = self._expand_class_targets(
         #     batch.class_target_values, index_tensor=batch.entity_index_mask_values
@@ -1005,7 +1003,6 @@ class RefinedModel_UMLS(nn.Module):
 
         # TODO: this can be optimized by tensorizing some of the steps such as pem lookups.
         spans: List[Span_UMLS] = []
-        special_type_spans: Dict[str, List[Span_UMLS]] = defaultdict(list)
 
         # (bs, max_seq_ln) - includes [SEP],[1:] removes [CLS]
         # very small tensor (e.g. (bs, max_seq) and simple operations so fine on CPU)
@@ -1015,7 +1012,6 @@ class RefinedModel_UMLS(nn.Module):
             preds = [self.ix_to_ner_tag[p] for p in bio_preds[batch_idx].tolist()]
             bio_spans = bio_to_offset_pairs(preds, use_labels=True)
             spans_for_batch: List[Span_UMLS] = []
-            #special_type_spans_for_batch: Dict[str, List[Span_UMLS]] = defaultdict(list)
             for start_list_idx, end_list_idx, coarse_type in bio_spans:
                 if end_list_idx > len(batch_elem.tokens):
                     # [SEP] or [PAD] token has been classified as part of span. Indicates the entity has been split
@@ -1065,7 +1061,7 @@ class RefinedModel_UMLS(nn.Module):
 
         num_ents = len([span for batch_elm in batch_elements for span in batch_elm.spans])
         if num_ents == 0:
-            return None, None, [], special_type_spans, None
+            return None, None, [], None
 
         # NOTE THAT THIS IS NOT THE MAX_SEQ FOR THE BATCH IF MULTI_GPU DataParallel WAS USED.
         # Use token_id.size(1) instead!
@@ -1127,7 +1123,7 @@ class RefinedModel_UMLS(nn.Module):
             b_cand_desc,
             b_cand_desc_emb,
         )
-        return acc_sums, b_entity_mask, spans, special_type_spans, candidate_tensors
+        return acc_sums, b_entity_mask, spans, candidate_tensors
 
     @staticmethod
     def _expand_tensors(
