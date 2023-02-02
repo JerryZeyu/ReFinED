@@ -1024,7 +1024,7 @@ class RefinedModel_UMLS(nn.Module):
                     ln=doc_char_end - doc_char_start,
                     text=batch_elem.text[doc_char_start:doc_char_end],
                     coarse_type=coarse_type,
-                    coarse_mention_type=coarse_type if coarse_type != 'MENTION' else None,
+                    coarse_mention_type=coarse_type,
                     doc_id=batch_elem.doc_id
                 )
                 if coarse_type == "MENTION":
