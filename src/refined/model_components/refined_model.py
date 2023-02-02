@@ -1033,6 +1033,7 @@ class RefinedModel_UMLS(nn.Module):
                     print("doc_char_end: ", doc_char_end)
                     print(span.ln)
                     print("span text: ", span.text)
+                    print("span: ", span)
                     spans_for_batch.append(span)
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
