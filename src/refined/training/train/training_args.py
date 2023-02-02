@@ -27,7 +27,8 @@ class TrainingArgs:
     epochs: int = 10
     lr: float = 5e-5
     batch_size: int = 8  # 8 uses around 12 GB, 16 uses 22 GB (can save space if find GPU process allocating)
-    ed_threshold: float = 0.15
+    #ed_threshold: float = 0.15
+    ed_threshold: float = 0.0
     num_warmup_steps: int = 10
     num_candidates_train: int = 30
     num_candidates_eval: int = 30

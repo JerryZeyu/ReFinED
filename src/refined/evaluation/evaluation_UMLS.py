@@ -64,6 +64,9 @@ def process_annotated_document(
         if force_prediction and umlsID == "C0":
             if len(span.top_k_predicted_entities) >= 2:
                 umlsID = span.top_k_predicted_entities[1][0].umls_entity_id
+        print("span text: ", span.text)
+        print("span start: ", span.start)
+        print("span umlsID: ", span.umlsID)
         pred_spans.add((span.text, span.start, umlsID))
 
     pred_spans = {(text, start, umlsID) for text, start, umlsID in pred_spans if umlsID != "C0"}

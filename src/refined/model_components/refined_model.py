@@ -1028,19 +1028,19 @@ class RefinedModel_UMLS(nn.Module):
                     doc_id=batch_elem.doc_id
                 )
                 if coarse_type == "MENTION":
-                    print("doc_char_start: ", doc_char_start)
-                    print(span.start)
-                    print("doc_char_end: ", doc_char_end)
-                    print(span.ln)
-                    print("span text: ", span.text)
-                    print("span: ", span)
+                    # print("doc_char_start: ", doc_char_start)
+                    # print(span.start)
+                    # print("doc_char_end: ", doc_char_end)
+                    # print(span.ln)
+                    # print("span text: ", span.text)
+                    # print("span: ", span)
                     spans_for_batch.append(span)
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
                 #     special_type_spans_for_batch[coarse_type].append(span)
-            print("span_for_batch before: ", spans_for_batch)
+            # print("span_for_batch before: ", spans_for_batch)
             spans_for_batch.sort(key=lambda x: x.start)
-            print("span_for_batch after: ", spans_for_batch)
+            # print("span_for_batch after: ", spans_for_batch)
             # for type_spans in special_type_spans_for_batch.values():
             #     type_spans.sort(key=lambda x: x.start)
 
@@ -1056,7 +1056,7 @@ class RefinedModel_UMLS(nn.Module):
                 if current_page_title != prev_page_title:
                     person_coreference = dict()
             prev_page_title = current_page_title
-            print("span_for_batch: ", spans_for_batch)
+            # print("span_for_batch: ", spans_for_batch)
             person_coreference = self.preprocessor.add_candidates_to_spans_umls(
                 spans_for_batch
             )
