@@ -845,7 +845,6 @@ class RefinedModel_UMLS(nn.Module):
                 max_seq=batch.token_id_values.size(1)
             )
             print("entity_spans: ", entity_spans)
-            print("*******************")
             if len(entity_spans) == 0:
                 # no point in continuing
                 num_ents = 0
@@ -869,6 +868,9 @@ class RefinedModel_UMLS(nn.Module):
                 cand_desc_emb,
             ) = candidate_tensors
             candidate_entity_targets = batch.candidate_target_values
+            print("cand_ids: ", cand_ids)
+            print("candidate_entity_targets: ", candidate_entity_targets)
+            print("*******************")
         else:
             # token_acc_sums, entity_mask, entity_spans, other_spans, candidate_tensors
             token_acc_sums = batch.token_acc_sum_values
