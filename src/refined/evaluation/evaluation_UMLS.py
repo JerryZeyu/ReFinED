@@ -36,6 +36,7 @@ def process_annotated_document(
             gold_entity_in_cands += 1
         print("candidate entityes: ", [umlsID for umlsID, _ in span.candidate_entities])
     print(gold_entity_in_cands)
+    print(el)
     print("*******************")
 
     # optionally filter NIL gold spans
