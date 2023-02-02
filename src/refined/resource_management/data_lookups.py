@@ -136,7 +136,9 @@ class LookupsInferenceOnly_UMLS:
             self.descriptions_tns = None
         self.umlsID_to_idx = pickle_load_large_file(resource_to_file_path["umlsID_to_idx"])
 
-        self.index_path = resource_to_file_path["sapbert_index_path"]
+        #self.index_path = resource_to_file_path["sapbert_index_path"]
+        with open(resource_to_file_path["sapbert_index_path"], mode="rb") as f:
+            self.index_path = pickle.load(f)
         self.umls_dictionary = load_UMLS_dictionary_data(resource_to_file_path["UMLS_dictionary_path"])
         self.model_dir = resource_to_file_path["sapbert_model"]
         if return_titles:

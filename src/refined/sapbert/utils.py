@@ -56,8 +56,9 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
     # dict_dense_embeds = model_wrapper.embed_dense(names=dict_names, show_progress=True, agg_mode=agg_mode)
     # with open("dict_dense_embeds_snomed_disorder_withAbbreviation.pkl", mode="wb") as f:
     #     pickle.dump(dict_dense_embeds, f, protocol=4)
-    with open(eval_index, mode="rb") as f:
-        dict_dense_embeds = pickle.load(f)
+    # with open(eval_index, mode="rb") as f:
+    #     dict_dense_embeds = pickle.load(f)
+    dict_dense_embeds = eval_index
     print("dict_dense_embeds.shape:", dict_dense_embeds.shape)
     mean_centering = False
     if mean_centering:
