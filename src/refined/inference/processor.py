@@ -845,14 +845,14 @@ class Refined_UMLS(object):
             umls_id = f'C{str(predicted_entity_ids[span_idx])}'
             span.predicted_entity = Entity_UMLS(
                 umls_entity_id=umls_id,
-                umls_entity_title=self.preprocessor.qcode_to_wiki.get(umls_id)
-                if self.preprocessor.qcode_to_wiki is not None else None
+                umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
+                if self.preprocessor.umlsID_to_title is not None else None
             )
             span.entity_linking_model_confidence_score = predicted_entity_confidence[span_idx]
             span.top_k_predicted_entities = [
                 (Entity_UMLS(umls_entity_id=f'C{entity_id}',
-                        umls_entity_title=self.preprocessor.qcode_to_wiki.get(umls_id)
-                        if self.preprocessor.qcode_to_wiki is not None else None
+                        umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
+                        if self.preprocessor.umlsID_to_title is not None else None
                         ),
                  round(score, 4))
                 for entity_id, score in
