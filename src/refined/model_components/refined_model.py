@@ -1037,8 +1037,9 @@ class RefinedModel_UMLS(nn.Module):
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
                 #     special_type_spans_for_batch[coarse_type].append(span)
-
+            print("span_for_batch before: ", spans_for_batch)
             spans_for_batch.sort(key=lambda x: x.start)
+            print("span_for_batch after: ", spans_for_batch)
             # for type_spans in special_type_spans_for_batch.values():
             #     type_spans.sort(key=lambda x: x.start)
 
