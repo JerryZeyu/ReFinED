@@ -68,3 +68,7 @@ def main():
     print(count_num/count)
     print(count_num)
     print(count)
+
+
+if __name__ == "__main__":
+    main()
