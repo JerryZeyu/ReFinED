@@ -45,7 +45,7 @@ def main():
         max_candidates=training_args.num_candidates_train,
         transformer_name=training_args.transformer_name,
         ner_tag_to_ix=NER_TAG_TO_IX_UMLS,  # for now include default ner_to_tag_ix can make configurable in future
-        entity_set=training_args.entity_set,
+        entity_set="umls",
         use_precomputed_description_embeddings=False
     )
     datasets = Datasets_BioNorm(preprocessor=preprocessor, resource_manager=resource_manager)
