@@ -349,6 +349,7 @@ class Datasets_BioNorm:
         docID2context = pickle_load_large_file(filename_context)
         docID2mentions = pickle_load_large_file(filename_mentions)
         # print(docID2mentions)
+        all_spans_num = 0
         for docID in docID2context.keys():
             text = docID2context[docID]
             spans = None
@@ -357,6 +358,7 @@ class Datasets_BioNorm:
                 spans = []
                 md_spans = []
                 for span in docID2mentions[docID]:
+                    all_spans_num += 1
                     print(span)
                     umlsID = span[3]
                     md_spans.append(
@@ -403,3 +405,4 @@ class Datasets_BioNorm:
                 yield Doc_UMLS.from_text_with_spans(
                         text=text, spans=spans, preprocessor=self.preprocessor, doc_id=docID
                     )
+        print("all_spans_num: ", all_spans_num)
