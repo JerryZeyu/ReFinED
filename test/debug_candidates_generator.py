@@ -62,6 +62,7 @@ def main():
     evaluation_doc = evaluation_dataset_name_to_docs["ShareClef"]
     for doc in evaluation_doc:
         for span in doc.spans:
+            count+=1
             candidate_entities = [item[0] for item in span.candidate_entities]
             gold_entity = span.gold_entity.umls_entity_id
             print(candidate_entities)
