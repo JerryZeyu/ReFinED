@@ -40,7 +40,7 @@ def main():
                                        model_name=None
                                        )
     preprocessor = PreprocessorInferenceOnly_UMLS(
-        data_dir=training_args.data_dir,
+        data_dir="data",
         debug=training_args.debug,
         max_candidates=training_args.num_candidates_train,
         transformer_name=training_args.transformer_name,
