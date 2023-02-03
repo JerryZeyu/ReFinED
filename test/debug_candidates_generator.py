@@ -65,8 +65,8 @@ def main():
             count+=1
             candidate_entities = [item[0] for item in span.candidate_entities]
             gold_entity = span.gold_entity.umls_entity_id
-            print(candidate_entities)
-            print(gold_entity)
+            #print(candidate_entities)
+            #print(gold_entity)
             if gold_entity in candidate_entities:
                 count_num += 1
     print(count_num/count)
