@@ -40,7 +40,7 @@ DATA_FILES_UMLS = {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_resource_prefix + "UMLS_data/qcode_to_wiki.lmdb",
         "local_filename": "Corpus_bionorm/UMLS/umlsID2title.pkl",
-        "needed_for_inference": False  # only needed if map to Wikipedia titles
+        "needed_for_inference": True  # only needed if map to Wikipedia titles
     },
     "umlsID_to_idx": {
         "s3_bucket": s3_resource_bucket,
