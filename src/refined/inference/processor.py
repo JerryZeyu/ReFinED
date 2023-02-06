@@ -920,7 +920,7 @@ class Refined_UMLS(object):
             'model_config': os.path.join(model_name, 'config.json'),
             'model_description_embeddings': {
                 # TODO: remove hard-coded size of entity sets
-                'umls': os.path.join(model_name, 'precomputed_entity_descriptions_emb_wikipedia_88150-300.np')
+                'umls': os.path.join(model_name, 'precomputed_entity_descriptions_emb_umls_88150-300.np')
             }[entity_set],
         }
         # model_description_embeddings
