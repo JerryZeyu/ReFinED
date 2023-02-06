@@ -65,17 +65,6 @@ def main():
             include_spans=True,
         ))
     }
-    count = 0
-    count_num = 0
-    evaluation_doc = evaluation_dataset_name_to_docs["ShareClef"]
-    for span in evaluation_doc.spans:
-        candidate_entities = [item[0].umls_entity_id for item in span.candidate_entities]
-        gold_entity = span.gold_entity.umls_entity_id
-        if gold_entity in candidate_entities:
-            count_num += 1
-    print(count_num/count)
-    print(count_num)
-    print(count)
 
     model = RefinedModel_UMLS(
         ModelConfig(data_dir=preprocessor.data_dir,
