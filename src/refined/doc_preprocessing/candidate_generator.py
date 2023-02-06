@@ -249,6 +249,7 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
                 sample_k_candidates=sample_k_candidates,
                 gold_qcode=span.gold_entity.umls_entity_id if sample_k_candidates else None
             )
+            print(candidates_umlsIDs)
             span.candidate_entities = candidates_umlsIDs
             text2candidates[span.text] = candidates_umlsIDs
         return text2candidates
