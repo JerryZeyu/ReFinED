@@ -3,7 +3,7 @@ import sys
 import json
 import pickle
 from collections import OrderedDict
-from refined.inference.processor import Refined
+from refined.inference.processor import Refined_UMLS
 
 def pickle_dump_large_file(obj, filepath):
     max_bytes = 2**31 - 1
@@ -22,12 +22,12 @@ def pickle_load_large_file(filepath):
             bytes_in += f_in.read(max_bytes)
     obj = pickle.loads(bytes_in)
     return obj
-refined = Refined.from_pretrained(model_name='fine_tuned_models/addUMLS_pretrain_test/f1_0.5210/',
-                                          entity_set="wikidata",
+refined = Refined_UMLS.from_pretrained(model_name='fine_tuned_models/test/f1_0.0556/',
+                                          entity_set="umls",
                                           use_precomputed_descriptions=True,
-                                          data_dir = "data/organised_data_dir",
+                                          data_dir = "data/",
                                           download_files = False)
-docID2context = pickle_load_large_file("Corpus_bionorm/ShareClef/test_docID2context_all.pkl")
+docID2context = pickle_load_large_file("data/ShareClef/test_docID2context.pkl")
 docID2results = OrderedDict()
 for docID in docID2context.keys():
     text = docID2context[docID]
@@ -35,5 +35,5 @@ for docID in docID2context.keys():
     print(spans)
     docID2results[docID] = spans
 
-with open("Corpus_bionorm/ShareClef/test_docID2results_wikidata_addUMLS_ShareClef_finetune.pickle", "wb") as f_w:
+with open("data/datasets/ShareClef/results/test_docID2results_ShareClef_finetune.pickle", "wb") as f_w:
     pickle.dump(docID2results, f_w)
