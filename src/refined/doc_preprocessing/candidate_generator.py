@@ -208,7 +208,7 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
         max_cands = sample_k_candidates if sample_k_candidates is not None else self.max_candidates
 
         print("[loading custom queries...]")
-        eval_queries = np.array([(surface_form.lower())], dtype=object)
+        eval_queries = np.array([surface_form.lower()], dtype=object)
         print("[custom queries loaded]")
         print("[start evaluating...]")
         print("eval_queries", eval_queries)
