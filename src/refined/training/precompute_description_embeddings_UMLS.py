@@ -43,6 +43,7 @@ def main():
     LOG.info(f"Using device: {device}.")
     refined = Refined_UMLS.from_pretrained(model_name=args.model_dir,
                                       entity_set=args.entity_set,
+                                      data_dir=args.data_dir,
                                       use_precomputed_descriptions=False,
                                       device=device)
     LOG.info('Precomputing description embeddings.')
