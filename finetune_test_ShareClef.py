@@ -22,7 +22,7 @@ def pickle_load_large_file(filepath):
             bytes_in += f_in.read(max_bytes)
     obj = pickle.loads(bytes_in)
     return obj
-refined = Refined_UMLS.from_pretrained(model_name='fine_tuned_models/test/f1_0.0556/',
+refined = Refined_UMLS.from_pretrained(model_name='data/roberta-base',
                                           entity_set="umls",
                                           use_precomputed_descriptions=True,
                                           data_dir = "data/",
