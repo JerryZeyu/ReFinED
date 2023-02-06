@@ -86,7 +86,7 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
 
         candidate_idxs, candidate_scores = model_wrapper.retrieve_candidate_cuda(
             score_matrix=score_matrix,
-            topk=topk+100,
+            topk=topk+200,
             batch_size=16,
             show_progress=False
         )
