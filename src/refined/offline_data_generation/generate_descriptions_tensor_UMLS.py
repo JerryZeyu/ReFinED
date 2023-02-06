@@ -43,6 +43,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
     labels = pickle_load_large_file(label_filename)
     umlsIDs = list(labels.keys())
     descriptions = pickle_load_large_file(desc_filename)
+    print("labels: ", labels)
     umlsID_to_idx = load_umlsID_to_idx(umlsID_to_idx_filename)
     pickle_dump_large_file(umlsID_to_idx, os.path.join(OUTPUT_PATH, 'umlsID_to_idx.pkl'))
 
