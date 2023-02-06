@@ -69,7 +69,7 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
     for eval_query in tqdm(eval_queries, total=len(eval_queries)):
         mention = eval_query
         #golden_cui = eval_query[1].replace("+", "|")
-        print("mention: ", mention)
+        #print("mention: ", mention)
         dict_mentions = []
         mention_dense_embeds = model_wrapper.embed_dense(names=[mention], agg_mode=agg_mode)
 

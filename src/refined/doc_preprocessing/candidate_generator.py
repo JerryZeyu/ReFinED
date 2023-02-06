@@ -211,7 +211,7 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
         eval_queries = np.array([surface_form.lower()], dtype=object)
         print("[custom queries loaded]")
         print("[start evaluating...]")
-        print("eval_queries", eval_queries)
+        #print("eval_queries", eval_queries)
         results = evaluate(
             model_wrapper=self.model_wrapper,
             eval_dictionary=self.umls_dic,
