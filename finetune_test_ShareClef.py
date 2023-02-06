@@ -27,7 +27,7 @@ refined = Refined_UMLS.from_pretrained(model_name='fine_tuned_models/test/f1_0.0
                                           use_precomputed_descriptions=True,
                                           data_dir = "data/",
                                           download_files = False)
-docID2context = pickle_load_large_file("data/ShareClef/test_docID2context.pkl")
+docID2context = pickle_load_large_file("data/datasets/ShareClef/test_docID2context.pkl")
 docID2results = OrderedDict()
 for docID in docID2context.keys():
     text = docID2context[docID]
