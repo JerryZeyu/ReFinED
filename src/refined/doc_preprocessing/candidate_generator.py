@@ -243,7 +243,7 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
         """
         text2candidates = {}
         for span in spans:
-            print("span.text: ", span.text)
+            #print("span.text: ", span.text)
             candidates_umlsIDs = self.get_candidates(
                 surface_form=span.text,
                 sample_k_candidates=sample_k_candidates,
