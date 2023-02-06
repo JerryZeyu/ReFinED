@@ -78,6 +78,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
 
     torch.save(descriptions_tns, os.path.join(output_path, 'descriptions_tns.pt'))
 OUTPUT_PATH = "data/Corpus_bionorm/UMLS"
+print(OUTPUT_PATH)
 create_description_tensor(output_path=OUTPUT_PATH,
                         umlsID_to_idx_filename=os.path.join(OUTPUT_PATH, 'umlsID_to_idx.json'),
                         desc_filename=os.path.join(OUTPUT_PATH, 'umlsID2desc.pkl'),
