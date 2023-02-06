@@ -44,13 +44,16 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
     umlsIDs = list(labels.keys())
     descriptions = pickle_load_large_file(desc_filename)
     umlsID_to_idx = load_umlsID_to_idx(umlsID_to_idx_filename)
-    print(umlsID_to_idx)
     pickle_dump_large_file(umlsID_to_idx, os.path.join(OUTPUT_PATH, 'umlsID_to_idx.pkl'))
 
     # TODO: check no extra [SEP] tokens between label and description or extra [CLS] or [SEP] at end
     tokenizer = AutoTokenizer.from_pretrained(tokeniser, use_fast=True, add_prefix_space=False)
     descriptions_tns = torch.zeros((len(umlsID_to_idx) + 2, 32), dtype=torch.int32)
+    print(descriptions_tns)
+    print("-------------------------")
     descriptions_tns.fill_(tokenizer.pad_token_id)
+    print(descriptions_tns)
+    print("**************************")
 
     umlsID_has_label = 0
     umlsID_has_desc = 0
