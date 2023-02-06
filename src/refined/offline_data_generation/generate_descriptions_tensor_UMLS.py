@@ -48,7 +48,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
 
     # TODO: check no extra [SEP] tokens between label and description or extra [CLS] or [SEP] at end
     tokenizer = AutoTokenizer.from_pretrained(tokeniser, use_fast=True, add_prefix_space=False)
-    descriptions_tns = torch.zeros((len(umlsID_to_idx) + 2, 32), dtype=torch.int32)
+    descriptions_tns = torch.zeros((len(umlsID_to_idx) + 2, 64), dtype=torch.int32)
     print(descriptions_tns)
     print("-------------------------")
     descriptions_tns.fill_(tokenizer.pad_token_id)
@@ -71,7 +71,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
                 desc = 'no description'
 
             sentence = (label, desc)
-            tokenised = tokenizer.encode_plus(sentence, truncation=True, max_length=32, padding='max_length',
+            tokenised = tokenizer.encode_plus(sentence, truncation=True, max_length=64, padding='max_length',
                                               return_tensors='pt')['input_ids']
             descriptions_tns[idx] = tokenised
         i += 1
