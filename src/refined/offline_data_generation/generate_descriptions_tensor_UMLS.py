@@ -74,6 +74,8 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
         if i % 250000 == 0:
             print(f'QCodes processed {i}, Qcodes with label: {umlsID_has_label}, '
                   f'Qcodes with label and description: {umlsID_has_desc}')
+    print(umlsID_has_label)
+    print(umlsID_has_desc)
     torch.save(descriptions_tns, os.path.join(output_path, 'descriptions_tns.pt'))
 OUTPUT_PATH = "data/Corpus_bionorm/UMLS"
 print(OUTPUT_PATH)
