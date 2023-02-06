@@ -844,7 +844,7 @@ class RefinedModel_UMLS(nn.Module):
                 md_activations=md_activations,
                 max_seq=batch.token_id_values.size(1)
             )
-            print("entity_spans: ", entity_spans)
+            # print("entity_spans: ", entity_spans)
             if len(entity_spans) == 0:
                 # no point in continuing
                 num_ents = 0
@@ -868,8 +868,8 @@ class RefinedModel_UMLS(nn.Module):
                 cand_desc_emb,
             ) = candidate_tensors
             candidate_entity_targets = batch.candidate_target_values
-            print("cand_ids: ", cand_ids)
-            print("candidate_entity_targets: ", candidate_entity_targets)
+            # print("cand_ids: ", cand_ids)
+            # print("candidate_entity_targets: ", candidate_entity_targets)
         else:
             # token_acc_sums, entity_mask, entity_spans, other_spans, candidate_tensors
             token_acc_sums = batch.token_acc_sum_values
@@ -1010,7 +1010,7 @@ class RefinedModel_UMLS(nn.Module):
         # (bs, max_seq_ln) - includes [SEP],[1:] removes [CLS]
         # very small tensor (e.g. (bs, max_seq) and simple operations so fine on CPU)
         bio_preds = (md_activations.argmax(dim=2) * attention_mask)[:, 1:].detach().cpu().numpy()
-        print("bio_preds: ", bio_preds)
+        # print("bio_preds: ", bio_preds)
         prev_page_title = None
         for batch_idx, batch_elem in enumerate(batch_elements):
             preds = [self.ix_to_ner_tag[p] for p in bio_preds[batch_idx].tolist()]
@@ -1032,12 +1032,12 @@ class RefinedModel_UMLS(nn.Module):
                     doc_id=batch_elem.doc_id
                 )
                 if coarse_type == "MENTION":
-                    print("doc_char_start: ", doc_char_start)
-                    print(span.start)
-                    print("doc_char_end: ", doc_char_end)
-                    print(span.ln)
-                    print("span text: ", span.text)
-                    print("span: ", span)
+                    # print("doc_char_start: ", doc_char_start)
+                    # print(span.start)
+                    # print("doc_char_end: ", doc_char_end)
+                    # print(span.ln)
+                    # print("span text: ", span.text)
+                    # print("span: ", span)
                     spans_for_batch.append(span)
                 # else:
                 #     # Other spans (e.g. "DATE" spans)
