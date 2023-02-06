@@ -52,21 +52,22 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
 
     # embed dictionary
     # dict_names = [row[0] for row in eval_dictionary]
-    print("[start embedding dictionary...]")
+    # print("[start embedding dictionary...]")
     # dict_dense_embeds = model_wrapper.embed_dense(names=dict_names, show_progress=True, agg_mode=agg_mode)
     # with open("dict_dense_embeds_snomed_disorder_withAbbreviation.pkl", mode="wb") as f:
     #     pickle.dump(dict_dense_embeds, f, protocol=4)
     # with open(eval_index, mode="rb") as f:
     #     dict_dense_embeds = pickle.load(f)
     dict_dense_embeds = eval_index
-    print("dict_dense_embeds.shape:", dict_dense_embeds.shape)
+    # print("dict_dense_embeds.shape:", dict_dense_embeds.shape)
     mean_centering = False
     if mean_centering:
         tgt_space_mean_vec = dict_dense_embeds.mean(0)
         dict_dense_embeds -= tgt_space_mean_vec
 
     queries = []
-    for eval_query in tqdm(eval_queries, total=len(eval_queries)):
+    #for eval_query in tqdm(eval_queries, total=len(eval_queries)):
+    for eval_query in eval_queries:
         mention = eval_query
         #golden_cui = eval_query[1].replace("+", "|")
         #print("mention: ", mention)
