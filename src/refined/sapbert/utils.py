@@ -67,7 +67,7 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
 
     queries = []
     for eval_query in tqdm(eval_queries, total=len(eval_queries)):
-        mention = eval_query[0]
+        mention = eval_query
         #golden_cui = eval_query[1].replace("+", "|")
         print("mention: ", mention)
         dict_mentions = []
