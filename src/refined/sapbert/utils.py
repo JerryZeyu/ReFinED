@@ -96,13 +96,13 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
         dict_candidates = []
         for np_candidate_idx, np_candidate in enumerate(np_candidates):
             dict_candidates.append((np_candidate[1], np_candidates_scores[np_candidate_idx]))
-        # dict_candidates_final = []
-        # for cand, cand_score in dict_candidates:
-        #     temp = [item[0] for item in dict_candidates_final]
-        #     if cand not in temp:
-        #         dict_candidates_final.append((cand, cand_score))
-        # queries.append(dict_candidates_final[0:topk])
-        queries.append(dict_candidates[0:topk])
+        dict_candidates_final = []
+        for cand, cand_score in dict_candidates:
+            temp = [item[0] for item in dict_candidates_final]
+            if cand not in temp:
+                dict_candidates_final.append((cand, cand_score))
+        queries.append(dict_candidates_final[0:topk])
+        #queries.append(dict_candidates[0:topk])
 
 
     return queries[0]
