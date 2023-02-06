@@ -791,7 +791,7 @@ class Refined_UMLS(object):
                 return []
         else:
             spans = None
-        print("spans: ", spans)
+        #print("spans: ", spans)
         if self.n_gpu == 1 or True:
             batch = batch.to(self.device)
         self.model.eval()
@@ -824,7 +824,7 @@ class Refined_UMLS(object):
         cand_ids = torch.cat(
             [output.cand_ids, torch.ones((output.cand_ids.size(0), 1), device=device, dtype=torch.long) * -1], 1
         )
-        print("cand_ids after: ", cand_ids)
+        #print("cand_ids after: ", cand_ids)
 
         ed_targets_predictions = output.ed_activations.argmax(dim=1)
         ed_targets_softmax = output.ed_activations.softmax(dim=1)
@@ -834,10 +834,10 @@ class Refined_UMLS(object):
         predicted_entity_ids = (
             cand_ids[torch.arange(cand_ids.size(0)), ed_targets_predictions].cpu().numpy().tolist()
         )
-        print("ed_activations: ", output.ed_activations)
-        print("ed_targets_predictions: ", ed_targets_predictions)
-        print("predicted_entity_ids: ", predicted_entity_ids)
-        print("*******************")
+        #print("ed_activations: ", output.ed_activations)
+        #print("ed_targets_predictions: ", ed_targets_predictions)
+        #print("predicted_entity_ids: ", predicted_entity_ids)
+        #print("*******************")
         predicted_entity_confidence = round_list(
             ed_targets_softmax[torch.arange(ed_targets_softmax.size(0)), ed_targets_predictions]
                 .cpu()

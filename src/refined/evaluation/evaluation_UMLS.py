@@ -34,8 +34,8 @@ def process_annotated_document(
         gold_spans.add((span.text, span.start, span.gold_entity.umls_entity_id))
         if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
-    print("gold_entity_in_cands: ", gold_entity_in_cands)
-    print("el: ", el)
+    #print("gold_entity_in_cands: ", gold_entity_in_cands)
+    #print("el: ", el)
 
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
@@ -70,9 +70,9 @@ def process_annotated_document(
         if force_prediction and umlsID == "C0":
             if len(span.top_k_predicted_entities) >= 2:
                 umlsID = span.top_k_predicted_entities[1][0].umls_entity_id
-        print("span text: ", span.text)
-        print("span start: ", span.start)
-        print("span umlsID: ", umlsID)
+        #print("span text: ", span.text)
+        #print("span start: ", span.start)
+        #print("span umlsID: ", umlsID)
         pred_spans.add((span.text, span.start, umlsID))
 
     pred_spans = {(text, start, umlsID) for text, start, umlsID in pred_spans if umlsID != "C0"}
