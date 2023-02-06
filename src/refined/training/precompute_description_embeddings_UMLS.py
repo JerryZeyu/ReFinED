@@ -25,6 +25,12 @@ def main():
              "which means separate precomputed description embeddings files are needed for Wikipedia and Wikidata.",
     )
     parser.add_argument(
+        "--data_dir",
+        type=str,
+        required=True,
+        help="file path to directory containing lookup files and wikipedia_data.",
+    )
+    parser.add_argument(
         "--device",
         type=str,
         help="device.",
