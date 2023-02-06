@@ -220,7 +220,6 @@ class CandidateGeneratorExactMatch_usingSAPBERT(CandidateGenerator):
             topk=max_cands,  # sort only the topk to save time
             agg_mode=self.agg_mode
         )
-        print(len(results))
         assert len(results) == 30
         return results
     def add_candidates_to_spans(
