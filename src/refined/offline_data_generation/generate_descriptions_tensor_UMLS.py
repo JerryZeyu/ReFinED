@@ -49,11 +49,7 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
     # TODO: check no extra [SEP] tokens between label and description or extra [CLS] or [SEP] at end
     tokenizer = AutoTokenizer.from_pretrained(tokeniser, use_fast=True, add_prefix_space=False)
     descriptions_tns = torch.zeros((len(umlsID_to_idx) + 2, 64), dtype=torch.int32)
-    print(descriptions_tns)
-    print("-------------------------")
     descriptions_tns.fill_(tokenizer.pad_token_id)
-    print(descriptions_tns)
-    print("**************************")
 
     umlsID_has_label = 0
     umlsID_has_desc = 0
@@ -78,8 +74,6 @@ def create_description_tensor(output_path: str, umlsID_to_idx_filename: str, des
         if i % 250000 == 0:
             print(f'QCodes processed {i}, Qcodes with label: {umlsID_has_label}, '
                   f'Qcodes with label and description: {umlsID_has_desc}')
-    print(descriptions_tns)
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     torch.save(descriptions_tns, os.path.join(output_path, 'descriptions_tns.pt'))
 OUTPUT_PATH = "data/Corpus_bionorm/UMLS"
 print(OUTPUT_PATH)
