@@ -353,7 +353,7 @@ class Datasets_BioNorm:
         print("all_docs_num: ", len(list(docID2context.keys())))
         for docID in docID2context.keys():
             text = docID2context[docID]
-            print("single mentions num: ", len(docID2mentions[docID]))
+            #print("single mentions num: ", len(docID2mentions[docID]))
             all_spans_num += len(docID2mentions[docID])
             spans = None
             md_spans = None
@@ -361,7 +361,7 @@ class Datasets_BioNorm:
                 spans = []
                 md_spans = []
                 for span in docID2mentions[docID]:
-                    print(span)
+                    #print(span)
                     umlsID = span[3]
                     md_spans.append(
                         Span(
