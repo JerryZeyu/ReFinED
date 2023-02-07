@@ -104,21 +104,25 @@ class EDLayer(nn.Module):
         scores = (scores * multiplication_mask) + addition_mask
         print("score: ", scores)
         print(scores.shape)
-        print("********************")
         no_cand_score = torch.zeros((scores.size(0), 1), device=scores.device)
         scores = torch.cat([scores, no_cand_score], dim=-1)
 
         if candidate_entity_targets is not None:
             # handles case when gold entity is masked should set target index to ignore it from loss
             targets = candidate_entity_targets.argmax(dim=1)
+            print("targets: ", targets)
             no_cand_index = torch.zeros_like(targets)
             no_cand_index.fill_(
                 scores.size(-1) - 1
             )
+            print("no_cand_index: ",no_cand_index)
             # make NOTA (no_cand_score) the correct answer when the correct entity has no description
             targets = torch.where(
                 scores[torch.arange(scores.size(0)), targets] != mask_value, targets, no_cand_index
             )
+            print("targets: ", targets)
+            print("scores: ", scores)
+            print("********************")
             loss = F.cross_entropy(scores, targets)
 
             # Changed this loss Nov 17 2022 (have not trained model with this yet)
