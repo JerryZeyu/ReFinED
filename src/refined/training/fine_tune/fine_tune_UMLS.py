@@ -125,7 +125,8 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
             loss = loss.mean()
             total_loss += loss.item()
             print("step: ", step)
-            print("total_lss / step", total_loss/step)
+            if step != 0:
+                print("total_lss / step", total_loss/step)
             if step % 100 == 99:
                 LOG.info(f"Loss: {total_loss / step}")
 
