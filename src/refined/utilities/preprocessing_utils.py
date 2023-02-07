@@ -539,7 +539,7 @@ def convert_batch_element_to_tensors_UMLS(
     if has_gold_label:
         # gold_qcode_values must be set so use the qcode to get the classes (types)
         gold_umlsIDs = [span.gold_entity.umls_entity_id for span in batch_element.spans]
-        gold_umlsIDs = ["Q0" if umlsID is None else umlsID for umlsID in gold_umlsIDs]
+        gold_umlsIDs = ["C0" if umlsID is None else umlsID for umlsID in gold_umlsIDs]
         gold_umlsID_values[:num_ents] = torch.from_numpy(
             np.array(list(map(lambda x: int(x.replace("C", "")), gold_umlsIDs)))
         )
@@ -603,6 +603,7 @@ def convert_batch_element_to_tensors_UMLS(
                                     ner_tag_to_ix=processor.ner_tag_to_ix),
         dtype=torch.long
     )
+    print("ner_labels: ", ner_labels)
 
     return BatchElementTns_UMLS(
         token_id_values,
