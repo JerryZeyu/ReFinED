@@ -145,12 +145,11 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                     LOG.info(f"Average loss: %s at global step: %s", str((total_loss-logging_loss) / 100), str(global_step), )
                     logging_loss = total_loss
 
-            if (step + 1) % checkpoint_every_n_steps == 0:
-                best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
-                                                       refined, optimizer=optimizer, scaler=scaler,
-                                                       scheduler=scheduler)
-        if epoch_num % 50 == 0:
-            best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
+                if global_step % checkpoint_every_n_steps == 0:
+                    best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
+                                                           refined, optimizer=optimizer, scaler=scaler,
+                                                           scheduler=scheduler)
+        best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
                                                 refined, optimizer=optimizer, scaler=scaler,
                                                 scheduler=scheduler)
 
