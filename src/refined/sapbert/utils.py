@@ -45,6 +45,11 @@ def check_label(predicted_cui, golden_cui):
     """
     return int(len(set(predicted_cui.split("|")).intersection(set(golden_cui.split("|")))) > 0)
 
+def softmax(x):
+    x = x - np.max(x)
+    exp_x = np.exp(x)
+    softmax_x = exp_x / np.sum(exp_x)
+    return softmax_x
 
 def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk, agg_mode="cls"):
     encoder = model_wrapper.get_dense_encoder()
@@ -101,7 +106,11 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
             temp = [item[0] for item in dict_candidates_final]
             if cand not in temp:
                 dict_candidates_final.append((cand, cand_score))
-        queries.append(dict_candidates_final[0:topk])
+        raw_umlsID = [item[0] for item in dict_candidates_final[0:topk]]
+        raw_pem_score = [item[1] for item in dict_candidates_final[0:topk]]
+        pem_score = softmax(np.array(raw_pem_score))
+        queries.append([(umlsID, pem_score[idx]) for idx, umlsID in enumerate(raw_umlsID)])
+        #queries.append(dict_candidates_final[0:topk])
         #queries.append(dict_candidates[0:topk])
 
 

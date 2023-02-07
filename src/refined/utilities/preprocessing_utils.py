@@ -566,7 +566,7 @@ def convert_batch_element_to_tensors_UMLS(
             candidate_desc = None
         else:
             candidate_desc = processor.get_descriptions_for_umlsID_batch(
-                candidate_umlsIDs, shape=(-1, max_candidates, 32)
+                candidate_umlsIDs, shape=(-1, max_candidates, 64)
             )  # TODO replace constant 32
             candidate_desc_emb = None
 
