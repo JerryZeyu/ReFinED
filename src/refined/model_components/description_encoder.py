@@ -71,13 +71,13 @@ class DescriptionEncoder(nn.Module):
         """
         num_ents, max_cands, _ = input_ids.size()
         input_ids = input_ids.view((-1, input_ids.size(-1)))
-        print("input_ids: ", input_ids)
+        #print("input_ids: ", input_ids)
         masked_cands_idx = (input_ids[:, 0] == self.tokenizer.pad_token_id).nonzero().squeeze(-1)
         unmasked_cands_idx = (input_ids[:, 0] != self.tokenizer.pad_token_id).nonzero().squeeze(-1)
         unmasked_cands = input_ids[unmasked_cands_idx]
-        print("masked_cands_idx: ", masked_cands_idx)
-        print("unmasked_cands_idx: ", unmasked_cands_idx)
-        print("unmasked_cands: ", unmasked_cands)
+        #print("masked_cands_idx: ", masked_cands_idx)
+        #print("unmasked_cands_idx: ", unmasked_cands_idx)
+        #print("unmasked_cands: ", unmasked_cands)
         attention_mask = (unmasked_cands != self.tokenizer.pad_token_id).long()
 
         pad_candidate = torch.zeros(768, device=input_ids.device)
