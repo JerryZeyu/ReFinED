@@ -116,7 +116,7 @@ def predict_topk(model_wrapper, eval_dictionary, eval_index, eval_queries, topk,
         raw_pem_score = [item[1] for item in dict_candidates_final[0:topk]]
         #pem_score = softmax(np.array(raw_pem_score))
         pem_score = min_max(raw_pem_score)
-        pem_score = [item + 1e-6 if item == 0 else item for item in pem_score]
+        pem_score = [item + 1e-6 if item == 0.0 else item for item in pem_score]
         queries.append([(umlsID, pem_score[idx]) for idx, umlsID in enumerate(raw_umlsID)])
         #queries.append(dict_candidates_final[0:topk])
         #queries.append(dict_candidates[0:topk])
