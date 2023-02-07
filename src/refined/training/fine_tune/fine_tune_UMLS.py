@@ -104,6 +104,9 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                           checkpoint_every_n_steps: int = 1000000, scaler: GradScaler = GradScaler()):
     model = refined.model
     best_f1 = 0.0
+    total_loss = 0.0
+    logging_loss = 0.0
+    global_step = 0
     for epoch_num in trange(fine_tuning_args.epochs):
         torch.cuda.empty_cache()
         optimizer.zero_grad()
@@ -124,9 +127,6 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
 
             loss = loss.mean()
             total_loss += loss.item()
-            print("step: ", step)
-            if step != 0:
-                print("total_lss / step", total_loss/step)
             if step % 100 == 99:
                 LOG.info(f"Loss: {total_loss / step}")
 
@@ -139,6 +139,11 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                 scaler.update()
                 optimizer.zero_grad()
                 scheduler.step()
+                global_step += 1
+
+                if global_step % 100 == 0:
+                    LOG.info(f"Average loss: %s at global step: %s", str((total_loss-logging_loss) / 100), str(global_step), )
+                    logging_loss = total_loss
 
             if (step + 1) % checkpoint_every_n_steps == 0:
                 best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
