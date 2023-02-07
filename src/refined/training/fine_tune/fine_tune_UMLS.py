@@ -114,7 +114,7 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
         LOG.info(f"Starting epoch number {epoch_num}")
         for param_group in optimizer.param_groups:
             LOG.info(f"lr: {param_group['lr']}")
-        total_loss = 0.0
+        #total_loss = 0.0
         for step, batch in tqdm(enumerate(training_dataloader), total=len(training_dataloader)):
             batch = batch.to(fine_tuning_args.device)
             with autocast():
@@ -131,9 +131,6 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                 LOG.info(f"Loss: {total_loss / step}")
 
             scaler.scale(loss).backward()
-            print("loss: ", loss.item())
-            print("total_loss: ", total_loss)
-            print("logging_loss: ", logging_loss)
             if (step + 1) % fine_tuning_args.gradient_accumulation_steps == 0:
                 scaler.unscale_(optimizer)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
