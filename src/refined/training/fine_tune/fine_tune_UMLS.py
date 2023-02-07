@@ -149,9 +149,9 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                     best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
                                                            refined, optimizer=optimizer, scaler=scaler,
                                                            scheduler=scheduler)
-        best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
-                                                refined, optimizer=optimizer, scaler=scaler,
-                                                scheduler=scheduler)
+    best_f1 = run_checkpoint_eval_and_save(best_f1, evaluation_dataset_name_to_docs, fine_tuning_args,
+                                            refined, optimizer=optimizer, scaler=scaler,
+                                            scheduler=scheduler)
 
 
 def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs: Dict[str, Iterable[Doc_UMLS]],
