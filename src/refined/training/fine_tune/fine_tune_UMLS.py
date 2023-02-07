@@ -168,8 +168,11 @@ def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs
     elif fine_tuning_args.checkpoint_metric == 'ed':
         LOG.info("Using ED performance for checkpoint metric")
         average_f1 = mean([metrics.get_f1() for metrics in evaluation_metrics.values() if not metrics.el])
+    elif fine_tuning_args.checkpoint_metric == 'md':
+        LOG.info("Using MD performance for checkpoint metric")
+        average_f1 = mean([metrics.get_f1_md() for metrics in evaluation_metrics.values() if metrics.el])
     else:
-        raise Exception("--checkpoint_metric (`checkpoint_metric`) needs to be set to el or ed,")
+        raise Exception("--checkpoint_metric (`checkpoint_metric`) needs to be set to el or ed or md,")
 
     if average_f1 > best_f1:
         LOG.info(f"Obtained best F1 so far of {average_f1:.3f} (previous best {best_f1:.3f})")
