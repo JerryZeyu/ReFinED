@@ -264,7 +264,7 @@ def parse_training_args() -> TrainingArgs:
     )
     parser.add_argument(
         "--checkpoint_metric",
-        default="ed",
+        default="md",
         type=str,
         help="""Needs to be "el" or "ed". Determines whether EL or ED F1 score will be used for checkpoint evaluation.
         By default "ed" will be used.
