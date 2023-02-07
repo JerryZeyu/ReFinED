@@ -60,7 +60,7 @@ class TrainingArgs:
         if self.checkpoint_metric is not None:
             # check input value
             self.checkpoint_metric = self.checkpoint_metric.lower()
-            assert self.checkpoint_metric in {"el", "ed"}, "--checkpoint_metric must be 'el' or 'ed'."
+            assert self.checkpoint_metric in {"el", "ed", "md"}, "--checkpoint_metric must be 'el' or 'ed' or 'md'."
         self.batch_size = self.batch_size * self.n_gpu
 
     def post_add_command_line_args(self):
