@@ -603,7 +603,7 @@ def convert_batch_element_to_tensors_UMLS(
                                     ner_tag_to_ix=processor.ner_tag_to_ix),
         dtype=torch.long
     )
-    print("ner_labels: ", ner_labels)
+    #print("ner_labels: ", ner_labels)
 
     return BatchElementTns_UMLS(
         token_id_values,
