@@ -162,6 +162,7 @@ def run_checkpoint_eval_and_save(best_f1: float, evaluation_dataset_name_to_docs
                                   el=fine_tuning_args.el,  # only evaluate EL when training EL
                                   ed=True,  # always evaluate standalone ED
                                   ed_threshold=fine_tuning_args.ed_threshold)
+    print("fine_tuning_args.checkpoint_metric: ", fine_tuning_args.checkpoint_metric)
     if fine_tuning_args.checkpoint_metric == 'el':
         LOG.info("Using EL performance for checkpoint metric")
         average_f1 = mean([metrics.get_f1() for metrics in evaluation_metrics.values() if metrics.el])
