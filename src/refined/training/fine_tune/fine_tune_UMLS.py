@@ -131,7 +131,9 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                 LOG.info(f"Loss: {total_loss / step}")
 
             scaler.scale(loss).backward()
-
+            print("loss: ", loss.item())
+            print("total_loss: ", total_loss)
+            print("logging_loss: ", logging_loss)
             if (step + 1) % fine_tuning_args.gradient_accumulation_steps == 0:
                 scaler.unscale_(optimizer)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -140,8 +142,6 @@ def run_fine_tuning_loops(refined: Refined_UMLS, fine_tuning_args: TrainingArgs,
                 optimizer.zero_grad()
                 scheduler.step()
                 global_step += 1
-                print("total_loss: ", total_loss)
-                print("logging_loss: ", logging_loss)
                 if global_step % 100 == 0:
                     LOG.info(f"Average loss: %s at global step: %s", str((total_loss-logging_loss) / 100), str(global_step), )
                     logging_loss = total_loss
