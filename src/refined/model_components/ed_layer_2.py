@@ -103,7 +103,7 @@ class EDLayer(nn.Module):
         print("addition_mask: ", addition_mask)
         scores = (scores * multiplication_mask) + addition_mask
         print("score: ", scores)
-        print(scores.shape(0))
+        print(scores.shape)
         print("********************")
         no_cand_score = torch.zeros((scores.size(0), 1), device=scores.device)
         scores = torch.cat([scores, no_cand_score], dim=-1)
