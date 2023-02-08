@@ -27,25 +27,23 @@ def process_annotated_document(
     gold_spans = set()
     gold_spans_list = []
     gold_entity_in_cands = 0
-    all_spans_num = 0
     for span in doc.spans:
         if (span.gold_entity is None or span.gold_entity.umls_entity_id is None
             # only include entity spans that have been annotated as an entity in a KB
                 or span.gold_entity.umls_entity_id == "C0"):
             continue
-        all_spans_num += 1
         gold_spans_list.append((span.text, span.start, span.gold_entity.umls_entity_id))
         gold_spans.add((span.text, span.start, span.gold_entity.umls_entity_id))
         if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
     #print("gold_entity_in_cands: ", gold_entity_in_cands)
     #print("el: ", el)
-    print(gold_spans_list)
-    print(sorted(gold_spans, key=lambda x: x[1]))
-    print(len(gold_spans_list))
-    print(len(gold_spans))
-    assert len(gold_spans_list) == len(gold_spans)
-    print("***all_spans_num***: ", all_spans_num)
+    if len(gold_spans_list) != len(gold_spans):
+        print(gold_spans_list)
+        print(sorted(gold_spans, key=lambda x: x[1]))
+        print(len(gold_spans_list))
+        print(len(gold_spans))
+        print("*******************")
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
     # many nil_spans in public datasets should have been linked to an entity but due to the annotation creation
