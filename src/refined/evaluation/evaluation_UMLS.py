@@ -26,17 +26,19 @@ def process_annotated_document(
         assert ed_threshold == 0.0, "ed_threshold must be set to 0 to force predictions"
     gold_spans = set()
     gold_entity_in_cands = 0
+    all_spans_num = 0
     for span in doc.spans:
         if (span.gold_entity is None or span.gold_entity.umls_entity_id is None
             # only include entity spans that have been annotated as an entity in a KB
                 or span.gold_entity.umls_entity_id == "C0"):
             continue
+        all_spans_num += 1
         gold_spans.add((span.text, span.start, span.gold_entity.umls_entity_id))
         if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
     #print("gold_entity_in_cands: ", gold_entity_in_cands)
     #print("el: ", el)
-
+    print("***all_spans_num***: ", all_spans_num)
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
     # many nil_spans in public datasets should have been linked to an entity but due to the annotation creation
