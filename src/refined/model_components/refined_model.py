@@ -1109,7 +1109,8 @@ class RefinedModel_UMLS(nn.Module):
                     [int(umlsID.replace("C", "")) if 'C' in umlsID else int(umlsID.replace("A", '-')) for umlsID, _ in
                      span.candidate_entities]
                 )
-
+        print("candidate_umlsIDs: ", candidate_umlsIDs)
+        print("candidate_umlsID_ints: ", candidate_umlsID_ints)
         num_cands = self.preprocessor.max_candidates
 
         if self.use_precomputed_descriptions:
