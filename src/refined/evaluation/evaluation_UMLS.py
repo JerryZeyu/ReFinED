@@ -40,6 +40,10 @@ def process_annotated_document(
             gold_entity_in_cands += 1
     #print("gold_entity_in_cands: ", gold_entity_in_cands)
     #print("el: ", el)
+    print(gold_spans_list)
+    print(gold_spans)
+    print(len(gold_spans_list))
+    print(len(gold_spans))
     assert len(gold_spans_list) == len(gold_spans)
     print("***all_spans_num***: ", all_spans_num)
     # optionally filter NIL gold spans
