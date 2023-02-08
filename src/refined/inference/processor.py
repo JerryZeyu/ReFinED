@@ -804,7 +804,7 @@ class Refined_UMLS(object):
                 # if not end to end then spans do not need to be returned
                 assert (spans is not None and len(spans) > 0) or (self.n_gpu == 1), (
                     "n_gpu must be 1 when spans are not " "provided."
-                ) 
+                )
                 output: ModelReturn_UMLS = self.model(batch=batch)
 
         spans = output.entity_spans
@@ -851,8 +851,8 @@ class Refined_UMLS(object):
 
         for span_idx, span in enumerate(spans):
             umls_id = f'C{str(predicted_entity_ids[span_idx])}'
-            print(self.preprocessor.umlsID_to_title)
-            print("*****************")
+            #print(self.preprocessor.umlsID_to_title)
+            #print("*****************")
             span.predicted_entity = Entity_UMLS(
                 umls_entity_id=umls_id,
                 umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
