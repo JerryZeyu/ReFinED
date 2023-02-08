@@ -804,7 +804,7 @@ class Refined_UMLS(object):
                 # if not end to end then spans do not need to be returned
                 assert (spans is not None and len(spans) > 0) or (self.n_gpu == 1), (
                     "n_gpu must be 1 when spans are not " "provided."
-                )
+                ) 
                 output: ModelReturn_UMLS = self.model(batch=batch)
 
         spans = output.entity_spans

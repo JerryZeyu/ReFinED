@@ -176,12 +176,12 @@ class EntityDisambiguation_withoutET(nn.Module):
 
         class_and_pem = self.dropout(class_and_pem)
         logits = self.classifier(class_and_pem)
-        #print("logits: ", logits)
+        print("logits: ", logits)
         logits_with_none_above = torch.cat(
             (logits, torch.zeros(size=(logits.size(0), 1, 1), device=current_device)), 1
         ).squeeze(-1)
-        #print("logits_with_none_above: ", logits_with_none_above)
-        #print(logits_with_none_above.shape)
+        print("logits_with_none_above: ", logits_with_none_above)
+        print(logits_with_none_above.shape)
 
         # candidate_mask is 0 when valid entity, and -10,000 when padding element
         # candidate entities with a pem value of 0 are considered padding elements
@@ -200,8 +200,8 @@ class EntityDisambiguation_withoutET(nn.Module):
 
         # candidate_mask_zero 1 when valid element 0 when padding element
         candidate_mask_zero = (candidate_mask == 0).int()
-        #print("candidate_mast_zero: ", candidate_mask_zero)
-        #print("candidate_mask: ", candidate_mask)
+        print("candidate_mast_zero: ", candidate_mask_zero)
+        print("candidate_mask: ", candidate_mask)
         #print("**********************")
         # consider that gold entity is masked (multiply by 0 prevents this)
         logits_with_none_above = logits_with_none_above * candidate_mask_zero + candidate_mask
@@ -209,7 +209,8 @@ class EntityDisambiguation_withoutET(nn.Module):
         # print("logits_with_none_above: ", logits_with_none_above)
         # print("candidate_mask: ", candidate_mask)
         # print("candidate_mask_zero: ", candidate_mask_zero)
-        # print("logits_with_none_above: ", logits_with_none_above)
+        print("logits_with_none_above: ", logits_with_none_above)
+        print("**********************")
         # print("candidate_entity_targets: ", candidate_entity_targets)
         # TODO: go back to above
         # just changed
