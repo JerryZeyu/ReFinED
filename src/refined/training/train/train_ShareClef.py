@@ -46,7 +46,8 @@ def main():
         transformer_name=training_args.transformer_name,
         ner_tag_to_ix=NER_TAG_TO_IX_UMLS,  # for now include default ner_to_tag_ix can make configurable in future
         entity_set=training_args.entity_set,
-        use_precomputed_description_embeddings=False
+        use_precomputed_description_embeddings=False,
+        return_titles=True
     )
     print(preprocessor.umlsID_to_title)
     datasets = Datasets_BioNorm(preprocessor=preprocessor, resource_manager=resource_manager)
