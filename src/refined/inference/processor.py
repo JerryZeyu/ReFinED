@@ -849,7 +849,13 @@ class Refined_UMLS(object):
         sorted_entity_ids = self.sort_tensor(cand_ids, old_indices).cpu().numpy().tolist()
 
         for span_idx, span in enumerate(spans):
-            umls_id = f'C{str(predicted_entity_ids[span_idx])}'
+            #umls_id = f'C{str(predicted_entity_ids[span_idx])}'
+            if predicted_entity_ids[span_idx] >= 9000000:
+                temp = str(predicted_entity_ids[span_idx] - 9000000)
+                temp_fillIn = "0" * (7-len(temp)) + temp
+                umls_id = f'C{temp_fillIn}'
+            else:
+                umls_id = f'C{str(predicted_entity_ids[span_idx])}'
             #print(self.preprocessor.umlsID_to_title)
             #print("*****************")
             span.predicted_entity = Entity_UMLS(

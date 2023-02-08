@@ -1106,7 +1106,7 @@ class RefinedModel_UMLS(nn.Module):
                 # temporary hack (use negative IDs for additional entities IDs to avoid
                 # collisions with Wikdata IDs
                 candidate_umlsID_ints.append(
-                    [int(umlsID.replace("C", "")) if 'C' in umlsID else int(umlsID.replace("A", '-')) for umlsID, _ in
+                    [int(umlsID.replace("C", "")) if int(umlsID.replace("C", "")) >= 1000000 else int(umlsID.replace("C", "")) + 9000000 for umlsID, _ in
                      span.candidate_entities]
                 )
         print("candidate_umlsIDs: ", candidate_umlsIDs)
