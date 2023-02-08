@@ -51,7 +51,7 @@ class TrainingArgs:
     checkpoint_every_n_steps: int = 2000
     resume: bool = False  # Resume training with same optimizer, scheduler, scaler (useful if previously crashed).
 
-    checkpoint_metric: Optional[str] = "md"  # Needs to be "el" or "ed". By default it will be "el" if el is True
+    checkpoint_metric: Optional[str] = "el"  # Needs to be "el" or "ed". By default it will be "el" if el is True
     # and "ed" if el is False.
 
     def __post_init__(self):
@@ -264,7 +264,7 @@ def parse_training_args() -> TrainingArgs:
     )
     parser.add_argument(
         "--checkpoint_metric",
-        default="md",
+        default="el",
         type=str,
         help="""Needs to be "el" or "ed". Determines whether EL or ED F1 score will be used for checkpoint evaluation.
         By default "ed" will be used.
