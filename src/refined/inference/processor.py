@@ -851,6 +851,8 @@ class Refined_UMLS(object):
 
         for span_idx, span in enumerate(spans):
             umls_id = f'C{str(predicted_entity_ids[span_idx])}'
+            print(self.preprocessor.umlsID_to_title)
+            print("*****************")
             span.predicted_entity = Entity_UMLS(
                 umls_entity_id=umls_id,
                 umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
