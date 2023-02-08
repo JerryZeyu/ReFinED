@@ -775,13 +775,14 @@ class Refined_UMLS(object):
         for span in all_spans:
             doc_id_to_doc[span.doc_id].spans.append(span)
         return docs
-    def post_processUMLS(self, umlsID):
-        if int(umlsID.replace("C", "")) >= 1000000:
-            umlsID_final = umlsID
-
+    def post_processUMLSID(self, pre_umlsID):
+        if int(pre_umlsID) >= 9000000:
+            temp = str(int(pre_umlsID) - 9000000)
+            temp_fillIn = "0" * (7 - len(temp)) + temp
+            umls_id = str(temp_fillIn)
         else:
-            umlsID_final = "C" + str(int(umlsID.replace("C", ""))+9000000)
-        return umlsID_final
+            umls_id = str(pre_umlsID)
+        return umls_id
     def process_tensors(self, batch: BatchedElementsTns_UMLS, ner_threshold: float = 0.5) -> List[Span_UMLS]:
         """
         Performs an forward pass of ReFinED model and returns the spans for the batch.
@@ -856,26 +857,22 @@ class Refined_UMLS(object):
 
         for span_idx, span in enumerate(spans):
             #umls_id = f'C{str(predicted_entity_ids[span_idx])}'
-            if predicted_entity_ids[span_idx] >= 9000000:
-                temp = str(predicted_entity_ids[span_idx] - 9000000)
-                temp_fillIn = "0" * (7-len(temp)) + temp
-                umls_id = f'C{temp_fillIn}'
-            else:
-                umls_id = f'C{str(predicted_entity_ids[span_idx])}'
+            umls_id = f'C{self.post_processUMLSID(predicted_entity_ids[span_idx])}'
             #print(str(predicted_entity_ids[span_idx]))
             #print(umls_id)
             #print(self.preprocessor.umlsID_to_title)
             #print(umls_id)
             #print("*****************")
-            self.preprocessor.umlsID_to_title.update({"C-1": 'None'})
             span.predicted_entity = Entity_UMLS(
                 umls_entity_id=umls_id,
                 umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
+                if umls_id != "C-1" else None
             )
             span.entity_linking_model_confidence_score = predicted_entity_confidence[span_idx]
             span.top_k_predicted_entities = [
-                (Entity_UMLS(umls_entity_id=f'C{entity_id}',
-                        umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
+                (Entity_UMLS(umls_entity_id=f'C{self.post_processUMLSID(entity_id)}',
+                        umls_entity_title=self.preprocessor.umlsID_to_title[f'C{self.post_processUMLSID(entity_id)}']
+                        if umls_id != "C-1" else None
                         ),
                  round(score, 4))
                 for entity_id, score in
@@ -884,7 +881,7 @@ class Refined_UMLS(object):
             ]
 
             span.candidate_entities = [
-                (self.post_processUMLS(umlsID), round(conf, 4))
+                (umlsID, round(conf, 4))
                 for umlsID, conf in filter(lambda x: not x[0] == "Q0", span.candidate_entities)
             ]
             span.description_scores = round_list(

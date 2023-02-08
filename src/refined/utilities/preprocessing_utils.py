@@ -462,6 +462,13 @@ def pad(inputs: List[List[Any]], seq_len: int, pad_value: Any = 0, post_pad: boo
             result.append([pad_value] * (seq_len - len(row)) + row)
     return result
 
+
+def pre_processUMLSID(ori_umlsID):
+    if int(ori_umlsID) >= 1000000:
+        umlsID = ori_umlsID
+    else:
+        umlsID = ori_umlsID + 9000000
+    return umlsID
 def convert_batch_element_to_tensors_UMLS(
         batch_element: BatchElement_UMLS, processor: Preprocessor
 ) -> BatchElementTns_UMLS:
@@ -541,7 +548,7 @@ def convert_batch_element_to_tensors_UMLS(
         gold_umlsIDs = [span.gold_entity.umls_entity_id for span in batch_element.spans]
         gold_umlsIDs = ["C0" if umlsID is None else umlsID for umlsID in gold_umlsIDs]
         gold_umlsID_values[:num_ents] = torch.from_numpy(
-            np.array(list(map(lambda x: int(x.replace("C", "")), gold_umlsIDs)))
+            np.array(list(map(lambda x: pre_processUMLSID(int(x.replace("C", ""))), gold_umlsIDs)))
         )
         # look up the classes from gold qcode
         # class_target_values[:num_ents] = processor.get_classes_idx_for_qcode_batch(
@@ -551,7 +558,7 @@ def convert_batch_element_to_tensors_UMLS(
     if num_ents > 0:
         candidate_umlsIDs = [str(y[0]) for x in batch_element.spans for y in x.candidate_entities]
         candidate_umlsID_ints = np.array(
-            list(map(lambda x: int(x.replace("C", "")), candidate_umlsIDs))
+            list(map(lambda x: pre_processUMLSID(int(x.replace("C", ""))), candidate_umlsIDs))
         ).reshape(num_ents, max_candidates)
         candidate_umlsID_values[:num_ents, :max_candidates] = torch.from_numpy(candidate_umlsID_ints)
 
