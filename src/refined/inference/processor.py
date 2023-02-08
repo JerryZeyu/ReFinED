@@ -951,6 +951,8 @@ class Refined_UMLS(object):
         os.makedirs(output_dir, exist_ok=True)
         dim = self.model.ed_2.description_encoder.output_dim
         shape = (self.preprocessor.descriptions_tns.size(0), dim)
+        print("shape: ", shape)
+        print("********************")
         # using float16 instead of float32 decreases performance by about 0.06 F1, but halves memory requirement
         # so it is worth the trade-off.
         output_filename = os.path.join(output_dir, f"precomputed_entity_descriptions_emb_{self.preprocessor.entity_set}_{shape[0]}-{shape[1]}.np")
