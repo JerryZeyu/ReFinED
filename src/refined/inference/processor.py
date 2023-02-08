@@ -775,7 +775,13 @@ class Refined_UMLS(object):
         for span in all_spans:
             doc_id_to_doc[span.doc_id].spans.append(span)
         return docs
+    def post_processUMLS(self, umlsID):
+        if int(umlsID.replace("C", "")) >= 1000000:
+            umlsID_final = umlsID
 
+        else:
+            umlsID_final = "C" + str(int(umlsID.replace("C", ""))+9000000)
+        return umlsID_final
     def process_tensors(self, batch: BatchedElementsTns_UMLS, ner_threshold: float = 0.5) -> List[Span_UMLS]:
         """
         Performs an forward pass of ReFinED model and returns the spans for the batch.
@@ -878,7 +884,7 @@ class Refined_UMLS(object):
             ]
 
             span.candidate_entities = [
-                (umlsID, round(conf, 4))
+                (self.post_processUMLS(umlsID), round(conf, 4))
                 for umlsID, conf in filter(lambda x: not x[0] == "Q0", span.candidate_entities)
             ]
             span.description_scores = round_list(
