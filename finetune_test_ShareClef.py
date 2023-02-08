@@ -32,6 +32,7 @@ docID2results = OrderedDict()
 for docID in docID2context.keys():
     text = docID2context[docID]
     spans = refined.process_text(text)
+    print(spans)
     docID2results[docID] = spans
 
 with open("data/datasets/ShareClef/results/test_docID2results_ShareClef_finetune.pickle", "wb") as f_w:
