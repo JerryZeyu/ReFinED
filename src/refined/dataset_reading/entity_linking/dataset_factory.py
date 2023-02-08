@@ -350,6 +350,7 @@ class Datasets_BioNorm:
         docID2mentions = pickle_load_large_file(filename_mentions)
         # print(docID2mentions)
         all_spans_num = 0
+        all_gold_spans_num = 0
         print("all_docs_num: ", len(list(docID2context.keys())))
         for docID in docID2context.keys():
             text = docID2context[docID]
@@ -398,6 +399,12 @@ class Datasets_BioNorm:
                         # print([(span.text, span.start, span.gold_entity.wikidata_entity_id) for span in spans])
                         # print(md_spans)
                         # print("****************")
+            for span in spans:
+                if (span.gold_entity is None or span.gold_entity.umls_entity_id is None
+                    # only include entity spans that have been annotated as an entity in a KB
+                        or span.gold_entity.umls_entity_id == "C0"):
+                    continue
+                all_gold_spans_num += 1
             if spans is None:
                 yield Doc_UMLS.from_text(
                         text=text,
@@ -408,3 +415,4 @@ class Datasets_BioNorm:
                         text=text, spans=spans, preprocessor=self.preprocessor, doc_id=docID
                     )
         print("all_spans_num: ", all_spans_num)
+        print("all_gold_spans_num: ", all_gold_spans_num)
