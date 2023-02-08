@@ -856,8 +856,10 @@ class Refined_UMLS(object):
                 umls_id = f'C{temp_fillIn}'
             else:
                 umls_id = f'C{str(predicted_entity_ids[span_idx])}'
+            print(str(predicted_entity_ids[span_idx]))
+            print(umls_id)
             #print(self.preprocessor.umlsID_to_title)
-            #print("*****************")
+            print("*****************")
             span.predicted_entity = Entity_UMLS(
                 umls_entity_id=umls_id,
                 umls_entity_title=self.preprocessor.umlsID_to_title[umls_id]
