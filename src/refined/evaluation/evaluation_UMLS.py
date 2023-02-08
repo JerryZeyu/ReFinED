@@ -41,7 +41,7 @@ def process_annotated_document(
     #print("gold_entity_in_cands: ", gold_entity_in_cands)
     #print("el: ", el)
     print(gold_spans_list)
-    print(gold_spans)
+    print(sorted(gold_spans, key=lambda x: x[1]))
     print(len(gold_spans_list))
     print(len(gold_spans))
     assert len(gold_spans_list) == len(gold_spans)
