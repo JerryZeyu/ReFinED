@@ -48,6 +48,7 @@ def main():
         entity_set=training_args.entity_set,
         use_precomputed_description_embeddings=False
     )
+    print(preprocessor.umlsID_to_title)
     datasets = Datasets_BioNorm(preprocessor=preprocessor, resource_manager=resource_manager)
     training_dataset = DocDataset_UMLS(
         docs=list(datasets.get_custom_dataset_name_docs_ShareClef(split="train", include_gold_label=True)),
