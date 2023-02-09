@@ -134,7 +134,7 @@ def evaluate_on_docs(
         doc_metrics = process_annotated_document(
             refined=refined,
             doc=doc,
-            force_prediction=False,
+            force_prediction=True,
             ed_threshold=ed_threshold,
             el=el
         )
