@@ -37,13 +37,13 @@ def process_annotated_document(
         if span.gold_entity.umls_entity_id in {umlsID for umlsID, _ in span.candidate_entities}:
             gold_entity_in_cands += 1
     #print("gold_entity_in_cands: ", gold_entity_in_cands)
-    #print("el: ", el)
-    if len(gold_spans_list) != len(gold_spans):
-        print(gold_spans_list)
-        print(sorted(gold_spans, key=lambda x: x[1]))
-        print(len(gold_spans_list))
-        print(len(gold_spans))
-        print("*******************")
+    # print("el: ", el)
+    # if len(gold_spans_list) != len(gold_spans):
+    #     print(gold_spans_list)
+    #     print(sorted(gold_spans, key=lambda x: x[1]))
+    #     print(len(gold_spans_list))
+    #     print(len(gold_spans))
+    #     print("*******************")
     # optionally filter NIL gold spans
     # nil_spans is a set of mention spans that are annotated as mentions in the dataset but are not linked to a KB
     # many nil_spans in public datasets should have been linked to an entity but due to the annotation creation
