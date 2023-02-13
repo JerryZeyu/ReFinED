@@ -564,5 +564,15 @@ BIONORM_DATASET_DATA_FILES = {
         "s3_bucket": s3_resource_bucket,
         "s3_key": s3_datasets_prefix + "test_docID2mentions.pkl",
         "local_filename": "ShareClef/test_docID2mentions.pkl",
+    },
+    "Wikipedia_UMLS_context": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_datasets_prefix + "wikipedia_UMLS_docID2context.pkl",
+        "local_filename": "wikipedia_UMLS_docID2context.pkl",
+    },
+    "Wikipedia_UMLS_mentions": {
+        "s3_bucket": s3_resource_bucket,
+        "s3_key": s3_datasets_prefix + "wikipedia_UMLS_docID2mentions.pkl",
+        "local_filename": "wikipedia_UMLS_docID2mentions.pkl",
     }
 }

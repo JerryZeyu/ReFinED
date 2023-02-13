@@ -348,6 +348,13 @@ class Datasets_BioNorm:
         filename_mentions = self.datasets_to_files[split_to_name_mentions[split]]
         docID2context = pickle_load_large_file(filename_context)
         docID2mentions = pickle_load_large_file(filename_mentions)
+        if split == "train":
+            filename_context_wikipedia = self.datasets_to_files["Wikipedia_UMLS_context"]
+            filename_mentions_wikipedia = self.datasets_to_files["Wikipedia_UMLS_mentions"]
+            docID2context_wikipedia = pickle_load_large_file(filename_context_wikipedia)
+            docID2mentions_wikipedia = pickle_load_large_file(filename_mentions_wikipedia)
+            docID2context.update(docID2context_wikipedia)
+            docID2mentions.update(docID2mentions_wikipedia)
         # print(docID2mentions)
         all_spans_num = 0
         all_gold_spans_num = 0
@@ -382,7 +389,7 @@ class Datasets_BioNorm:
                                 text=text[int(span[1]):int(span[2])],
                                 gold_entity=Entity_UMLS(umls_entity_id=umlsID, umls_entity_title=title),
                                 coarse_type="MENTION",
-                                doc_id = docID
+                                doc_id = str(docID)
                             )
                         )
                     else:
@@ -393,7 +400,7 @@ class Datasets_BioNorm:
                                 ln=span["length"],
                                 text=text[span["start"]: span["start"] + span["length"]],
                                 coarse_type="MENTION",
-                                doc_id = docID
+                                doc_id = str(docID)
                             )
                         )
                         # print([(span.text, span.start, span.gold_entity.wikidata_entity_id) for span in spans])
@@ -412,7 +419,7 @@ class Datasets_BioNorm:
                     )
             else:
                 yield Doc_UMLS.from_text_with_spans(
-                        text=text, spans=spans, preprocessor=self.preprocessor, doc_id=docID
+                        text=text, spans=spans, preprocessor=self.preprocessor, doc_id=str(docID)
                     )
         print("all_spans_num: ", all_spans_num)
         print("all_gold_spans_num: ", all_gold_spans_num)
