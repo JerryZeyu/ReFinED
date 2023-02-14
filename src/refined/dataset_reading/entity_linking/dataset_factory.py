@@ -1,4 +1,5 @@
 import json
+import random
 from typing import Iterable
 import os
 import pickle
@@ -353,8 +354,12 @@ class Datasets_BioNorm:
             filename_mentions_wikipedia = self.datasets_to_files["Wikipedia_UMLS_mentions"]
             docID2context_wikipedia = pickle_load_large_file(filename_context_wikipedia)
             docID2mentions_wikipedia = pickle_load_large_file(filename_mentions_wikipedia)
-            docID2context.update(docID2context_wikipedia)
-            docID2mentions.update(docID2mentions_wikipedia)
+            # docID2context.update(docID2context_wikipedia)
+            # docID2mentions.update(docID2mentions_wikipedia)
+            docID_sample_list = random.sample(list(docID2mentions_wikipedia.keys()), 5000)
+            for docID_sample in docID_sample_list:
+                docID2context[docID_sample] = docID2context_wikipedia[docID_sample]
+                docID2mentions[docID_sample] = docID2mentions_wikipedia[docID_sample]
         # print(docID2mentions)
         all_spans_num = 0
         all_gold_spans_num = 0
