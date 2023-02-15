@@ -356,7 +356,7 @@ class Datasets_BioNorm:
             docID2mentions_wikipedia = pickle_load_large_file(filename_mentions_wikipedia)
             # docID2context.update(docID2context_wikipedia)
             # docID2mentions.update(docID2mentions_wikipedia)
-            docID_sample_list = random.sample(list(docID2mentions_wikipedia.keys()), 5000)
+            docID_sample_list = random.sample(list(docID2mentions_wikipedia.keys()), 10000)
             for docID_sample in docID_sample_list:
                 docID2context[docID_sample] = docID2context_wikipedia[docID_sample]
                 docID2mentions[docID_sample] = docID2mentions_wikipedia[docID_sample]
