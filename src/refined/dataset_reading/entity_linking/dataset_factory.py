@@ -3,6 +3,7 @@ import random
 from typing import Iterable
 import os
 import pickle
+from collections import OrderedDict
 from refined.data_types.doc_types import Doc, Doc_UMLS
 from refined.data_types.base_types import Entity, Entity_UMLS, Span, Span_UMLS
 from refined.doc_preprocessing.preprocessor import Preprocessor
@@ -356,10 +357,14 @@ class Datasets_BioNorm:
             docID2mentions_wikipedia = pickle_load_large_file(filename_mentions_wikipedia)
             # docID2context.update(docID2context_wikipedia)
             # docID2mentions.update(docID2mentions_wikipedia)
-            docID_sample_list = random.sample(list(docID2mentions_wikipedia.keys()), 10000)
+            docID_sample_list = random.sample(list(docID2mentions_wikipedia.keys()), 100000)
+            docID2context_temp = OrderedDict()
+            docID2mentions_temp = OrderedDict()
             for docID_sample in docID_sample_list:
-                docID2context[docID_sample] = docID2context_wikipedia[docID_sample]
-                docID2mentions[docID_sample] = docID2mentions_wikipedia[docID_sample]
+                docID2context_temp[docID_sample] = docID2context_wikipedia[docID_sample]
+                docID2mentions_temp[docID_sample] = docID2mentions_wikipedia[docID_sample]
+            docID2context = docID2context_temp
+            docID2mentions = docID2mentions_temp
         # print(docID2mentions)
         all_spans_num = 0
         all_gold_spans_num = 0
