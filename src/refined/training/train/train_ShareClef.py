@@ -98,11 +98,15 @@ def main():
         device=training_args.device
     )
 
+    # param_groups = [
+    #     {"params": model_to_save.get_desc_params(), "lr": training_args.lr},
+    #     {"params": model_to_save.get_ed_params(), "lr": training_args.lr * 100},
+    #     {"params": model_to_save.get_parameters_not_to_scale(), "lr": training_args.lr}
+    # ]
     param_groups = [
-        {"params": model_to_save.get_desc_params(), "lr": training_args.lr},
-        {"params": model_to_save.get_ed_params(), "lr": training_args.lr * 100},
         {"params": model_to_save.get_parameters_not_to_scale(), "lr": training_args.lr}
     ]
+    print("training_args.el: ", training_args.el)
     if training_args.el:
         param_groups.append({"params": model_to_save.get_md_params(), "lr": training_args.lr})
 
